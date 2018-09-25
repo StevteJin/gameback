@@ -1,0 +1,133 @@
+<script type="application/javascript" charset="utf-8">
+    var svrInfo = undefined;
+    function selectSvr(rec){
+        svrInfo = rec;
+        $('#actForm').form('load',rec);
+        $('#chatForm').form('load',rec);
+    }
+
+    function clickMaintainSvr(){
+        if(svrInfo === undefined){
+            $.messager.alert('Info','Please select svrName!', 'info');
+        }else{
+            $.post("/svrMgrACtion/maintainSvr",svrInfo,function(rs){
+                $.messager.alert('Info',rs.msg, 'info');
+            });
+        }
+    }
+
+    function clickRunSvr(){
+        if(svrInfo === undefined){
+            $.messager.alert('Info','Please select svrName!', 'info');
+        }else{
+            $.post("/svrMgrACtion/runSvr",svrInfo,function(rs){
+                $.messager.alert('Info',rs.msg, 'info');
+            });
+        }
+    }
+
+    $(function(){
+        $('#actForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                $.messager.alert('Info', r.msg, 'info');
+            }
+        });
+
+        $('#chatForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                $.messager.alert('Info', r.msg, 'info');
+            }
+        });
+    });
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="分服信息" data-options="iconCls:'icon-add'">
+        <table cellpadding="5">
+            <tr>
+                <td>ServerName:</td>
+                <td style="width:280px;">
+                    <input class="easyui-combobox"
+                           name="svrName"
+                           id="svrName"
+                           data-options="
+                                    valueField:'svrName',
+                                    textField:'svrName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/svrMgrAction/svrList', { txt:newValue},function(data){
+                                                    $('#svrName').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        selectSvr(rec);
+                                    }">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="button" value="开启维护" onclick="clickMaintainSvr()"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="button" value="开启服务" onclick="clickRunSvr()"></td>
+            </tr>
+        </table>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="活动管理" data-options="iconCls:'icon-edit',collapsible:true">
+        <form id="actForm" action="/svrMgrACtion/editerAct" class="easyui-form" method="post">
+            <input type="hidden" name="_id"/>
+            <input type="hidden" name="svrName"/>
+            <table cellpadding="5">
+                <tr>
+                    <td>ActName:</td>
+                    <td>
+                        <label>
+                            <select class="easyui-combobox" name="type" style="width:180px;">
+                                <option value="upgrade">大家一起来冲级</option>
+                                <option value="legend">传说三骑士</option>
+                                <option value="recharge">充值返利</option>
+                                <option value="expDouble">双倍经验</option>
+                                <option value="dropDouble">双倍掉落</option>
+                                <option value="ectypeAll">副本全开</option>
+                                <option value="aggregateConsumption">累计消费</option>
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>StartTime:</td>
+                    <td><label><input class="easyui-datetimebox" name="startTime" data-options="formatter:mformatter1,parser:mformatter2,required:true" style="width:180px;"/></label></td>
+                </tr>
+                <tr>
+                    <td>EndingTime:</td>
+                    <td><label><input class="easyui-datetimebox" name="endingTime" data-options="formatter:mformatter1,parser:mformatter2,required:true" style="width:180px;"/></label></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label><input type="submit" value="Save" style="float: right"/></label></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="聊天室设置" data-options="iconCls:'icon-edit',collapsible:true">
+        <form id="chatForm" action="/svrMgrACtion/chat" class="easyui-form" method="post">
+            <input type="hidden" name="_id"/>
+            <input type="hidden" name="svrName"/>
+            <table cellpadding="5">
+                <tr>
+                    <td>ChatRoomID:</td>
+                    <td><label><input class="easyui-textbox" name="chatRoomId" data-options="required:true" style="width:180px;"/></label></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label><input type="submit" value="Save" style="float: right"/></label></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

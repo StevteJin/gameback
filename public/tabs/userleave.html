@@ -1,0 +1,85 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $.get("/statisticAction/userLeave", function(data){
+            var wUserLeave = '<li>7天流失 : ' + data.wUserLeave + '</li>';
+            $('#userleave').append(wUserLeave);
+            var odds7ul = 0;
+            if(data.wUserLeave > 0){
+                var wauCount = data.wauCount;
+                odds7ul = parseFloat(data.wUserLeave/wauCount) ;
+            }
+            $('#userleave').append('<li>7天流失率 : ' + toDecimal(odds7ul) + '%</li>');
+
+            var twUserLeave = '<li>14天流失 : ' + data.twUserLeave + '</li>';
+            $('#userleave').append(twUserLeave);
+            var odds14ul = 0;
+            if(data.twUserLeave > 0){
+                var twauCount = data.twauCount;
+                odds14ul = parseFloat(data.twUserLeave/twauCount) ;
+            }
+            $('#userleave').append('<li>14天流失率 : ' + toDecimal(odds14ul) + '%</li>');
+
+            var mUserLeave = '<li>30天流失 : ' + data.mUserLeave + '</li>';
+            $('#userleave').append(mUserLeave);
+            var odds30ul = 0;
+            if(data.mUserLeave > 0){
+                var mauCount = data.mauCount;
+                odds30ul = parseFloat(data.mUserLeave/mauCount) ;
+            }
+            $('#userleave').append('<li>30天流失率 : ' + toDecimal(odds30ul) + '%</li>');
+        });
+
+        $.get("/statisticAction/userLeaveGroupLv", function(data){
+            var wGroupLv = data.wGroupLv;
+            for(var i = 0; i < wGroupLv.length; i++ ){
+                var row = wGroupLv[i];
+                var mUserLeave = '<li>Lv : ' + row._id + getNBSP(row._id) +'|&nbsp;&nbsp;&nbsp;&nbsp;人数 : ' + row.count + '</li>';
+                $('#ul7GroupLv').append(mUserLeave);
+            }
+            var twGroupLv = data.twGroupLv;
+            for(var i = 0; i < twGroupLv.length; i++ ){
+                var row = twGroupLv[i];
+                var mUserLeave = '<li>Lv : ' + row._id + getNBSP(row._id) +'|&nbsp;&nbsp;&nbsp;&nbsp;人数 : ' + row.count + '</li>';
+                $('#ul14GroupLv').append(mUserLeave);
+            }
+            var mGroupLv = data.mGroupLv;
+            for(var i = 0; i < mGroupLv.length; i++ ){
+                var row = mGroupLv[i];
+                var mUserLeave = '<li>Lv : ' + row._id + getNBSP(row._id) +'|&nbsp;&nbsp;&nbsp;&nbsp;人数 : ' + row.count + '</li>';
+                $('#ul30GroupLv').append(mUserLeave);
+            }
+        });
+    });
+
+    function getNBSP(lv){
+        if(lv < 10){
+            return "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        }else if(lv < 100){
+            return "&nbsp;&nbsp&nbsp;&nbsp;"
+        }else{
+            return "&nbsp;&nbsp;"
+        }
+    }
+
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="统计数据" data-options="iconCls:'icon-man'">
+        <ul id="userleave" style="font-size: 30px;">
+        </ul>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="7天流失玩家等级" data-options="iconCls:'icon-man'">
+        <ul id="ul7GroupLv" style="font-size: 30px;">
+        </ul>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="14天流失玩家等级" data-options="iconCls:'icon-man'">
+        <ul id="ul14GroupLv" style="font-size: 30px;">
+        </ul>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="30天流失玩家等级" data-options="iconCls:'icon-man'">
+        <ul id="ul30GroupLv" style="font-size: 30px;">
+        </ul>
+    </div>
+</div>

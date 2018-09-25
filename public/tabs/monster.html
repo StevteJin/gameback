@@ -1,0 +1,148 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $('#monsterForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                if(r.code === 200){
+                    $('#monsterDatagrid').datagrid('reload');
+                    $.messager.alert('Info','Success!', 'info');
+                }else{
+                    $.messager.alert('Err',r.msg, 'info');
+                }
+            }
+        });
+    });
+
+    function setMonsterDgQuery(rec){
+        $('#monsterDatagrid').datagrid({
+            queryParams: {
+                svrName: rec.svrName
+            }
+        });
+    }
+
+    function formatterMState(val,row){
+        if (val === 'Overdue'){
+            return '<span style="color:red;">'+val+'</span>';
+        } else {
+            return val;
+        }
+    }
+    function formatterMNode(val,row){
+        if (val.length > 27){
+            return val.substr(0,27)+"...";
+        } else {
+            return val;
+        }
+    }
+    function formatMOper(val,row,index){
+        return '<a href="#" class="easyui-linkbutton" onclick="delMonster('+index+')">Remove</a>';
+    }
+
+    function foratterMDate(val,row){
+        var date = new Date(val * 1000);
+        var y = date.getFullYear();
+        var mos = date.getMonth() + 1;
+        var m = mos > 9 ? mos : '0' + mos;
+        var d = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
+        return y + '-' + m + '-' + d;
+    }
+
+    function delMonster(index) {
+        $('#monsterDatagrid').datagrid('selectRow', index);// 关键在这里
+        var row = $('#monsterDatagrid').datagrid('getSelected');
+        $.post("/monsterAction/moveUsingMonster",row,function(data){
+//            var r = $.parseJSON(data);
+            if(data.code === 200){
+                $('#monsterDatagrid').datagrid('reload');
+            }else{
+                $.messager.alert('Err',data.msg, 'info');
+            }
+        });
+    }
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="Add Monster" data-options="iconCls:'icon-add',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="monsterForm" action="/monsterAction/add" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>ServerName:</td>
+                    <td>
+                        <input class="easyui-combobox"
+                               name="svrName"
+                               id="svrName"
+                               data-options="
+                                    prompt:'Please enter Name...',
+                                    valueField:'svrName',
+                                    textField:'svrName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/svrMgrAction/svrList', { txt:newValue},function(data){
+                                                    $('#svrName').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        setMonsterDgQuery(rec);
+                                    }">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td>
+                        <input id="monsterSearchInput"
+                               class="easyui-combobox"
+                               name="MonsterName"
+                               data-options="
+                                    prompt:'Please enter Name...',
+                                    url:'tabs/json/MercenaryConfig.json',
+                                    method:'get',
+                                    valueField:'mid',
+                                    textField:'MonsterName',
+                                    panelHeight:'100px',
+                                    onSelect:function(rec){
+                                        $('#monsterForm').form('load',rec);
+                                    }
+                                    ">
+                    </td>
+                </tr>
+                <tr>
+                    <td>ID:</td>
+                    <td><input class="easyui-textbox" type="text" name="mid" data-options="readonly:true,required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Note:</td>
+                    <td><input class="easyui-textbox" type="text" name="Note" style="height: 60px;" data-options="required:true,readonly:true,multiline:true"/></td>
+                </tr>
+                <tr>
+                    <td>Start:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="Start"></td>
+                </tr>
+                <tr>
+                    <td>End:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="End"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="Monster Using" data-options="iconCls:'icon-man',collapsible:true">
+        <table id="monsterDatagrid" class="easyui-datagrid"
+               data-options="singleSelect:true,url:'/monsterAction/getUsingMonster',method:'get',border:false,fitColumns:true">
+            <thead>
+            <tr>
+                <th data-options="field:'mid'">Item ID</th>
+                <th data-options="field:'MonsterName'">MonsterName</th>
+                <th data-options="field:'Note',align:'left',formatter:formatterMNode">Note</th>
+                <th data-options="field:'Start',align:'right',formatter:foratterMDate">Start Date</th>
+                <th data-options="field:'End',align:'right',formatter:foratterMDate">End Date</th>
+                <th data-options="field:'Status',align:'center',formatter:formatterMState">Status</th>
+                <th data-options="field:'Methods',align:'center',width:20,formatter:formatMOper">Methods</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>

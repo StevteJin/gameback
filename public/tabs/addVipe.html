@@ -1,0 +1,52 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $('#addVipeForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                $('#addVipeForm').form('clear');
+                $('#addVipeForm').form('load',{"propsID":"VIP"});
+                $.messager.alert('Info', r.msg, 'info');
+            }
+        });
+    });
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="添加金币" data-options="iconCls:'icon-add'" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="addVipeForm" action="/playerAction/addProps" class="easyui-form" method="post">
+            <input type="hidden" name="propsID" value="VIP">
+            <table cellpadding="5">
+                <tr>
+                    <td>NickName:</td>
+                    <td><input class="easyui-combobox"
+                               name="nickName"
+                               id="vnname"
+                               data-options="
+                                    valueField:'nickName',
+                                    textField:'nickName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/playerAction/findPlayer', { txt:newValue},function(data){
+                                                    $('#vnname').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        $('#addVipeForm').form('load',rec);
+                                    }">
+                    </td>
+                </tr>
+                <tr>
+                    <td>PID:</td>
+                    <td><input class="easyui-textbox" type="text" name="_id" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td>VipExp:</td>
+                    <td><input class="easyui-textbox" type="text" name="count" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

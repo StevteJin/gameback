@@ -1,0 +1,190 @@
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        $('#BossForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                if(r.code === 200){
+                    $('#bossDatagrid').datagrid('reload');
+                    $.messager.alert('Info','Success!', 'info');
+                }else{
+                    $.messager.alert('Err',r.msg, 'info');
+                }
+            }
+        });
+    });
+
+    function setBossDgQuery(rec){
+        $('#bossDatagrid').datagrid({
+            queryParams: {
+                svrName: rec.svrName
+            }
+        });
+    }
+
+    function formatterBNode(val,row){
+        if (val.length > 22){
+            return val.substr(0,22)+"...";
+        } else {
+            return val;
+        }
+    }
+
+    function formatterBLv(val,row){
+        return "Lv:" + val;
+    }
+
+    function formatBossOper(val,row,index){
+        return '<a href="#" class="easyui-linkbutton" onclick="delBoss('+index+')">Remove</a>';
+    }
+
+    function delBoss(index){
+        $('#bossDatagrid').datagrid('selectRow', index);// 关键在这里
+        var row = $('#bossDatagrid').datagrid('getSelected');
+        $.post("/worldbossAction/moveBossItem",row,function(data){
+//            var r = $.parseJSON(data);
+            if(data.code === 200){
+                $('#bossDatagrid').datagrid('reload');
+            }else{
+                $.messager.alert('Err',data.msg, 'info');
+            }
+        });
+    }
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="Edit World BOSS Config" data-options="iconCls:'icon-edit',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="BossForm" action="/worldbossAction/add" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>ServerName:</td>
+                    <td>
+                        <input class="easyui-combobox"
+                               name="svrName"
+                               id="svrName"
+                               data-options="
+                                    prompt:'Please enter SvrName...',
+                                    valueField:'svrName',
+                                    textField:'svrName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/svrMgrAction/svrList', { txt:newValue},function(data){
+                                                    $('#svrName').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        setBossDgQuery(rec);
+                                    }">
+                    </td>
+                </tr>
+                <tr>
+                    <td>MonsterName:</td>
+                    <td>
+                        <input id="itemName"
+                               class="easyui-combobox"
+                               name="MonsterName"
+                               data-options="
+                                        prompt:'Please select MonsterName...',
+                                        url:'tabs/json/boss.json',
+                                        method:'get',
+                                        valueField:'mid',
+                                        textField:'MonsterName',
+                                        panelHeight:'100px',
+                                        onSelect:function(rec){
+                                            $('#BossForm').form('load',rec);
+                                        },
+                                        panelHeight:'auto'
+                                        ">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Note:</td>
+                    <td><input class="easyui-textbox" type="text" name="Note" style="height: 72px;" data-options="readonly:true,required:true,multiline:true"/></td>
+                </tr>
+                <tr>
+                    <td>ID:</td>
+                    <td><input class="easyui-textbox" type="text" name="mid" data-options="readonly:true,required:true"/></td>
+                </tr>
+                <tr>
+                    <td>HPBase:</td>
+                    <td><input class="easyui-textbox" type="text" name="HPBase" data-options="readonly:true,required:true"/></td>
+                </tr>
+                <tr>
+                    <td>HPStep:</td>
+                    <td><input class="easyui-textbox" type="text" name="HPStep" data-options="readonly:true,required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Week:</td>
+                    <td>
+                        <select class="easyui-combobox" name="week" data-options="required:true,panelHeight:'auto'">
+                            <option value="1" selected>Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                            <option value="7">Sunday</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>StartTime:</td>
+                    <td><input class="easyui-timespinner" type="text" name="StartTime" value="12:00" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Lv:</td>
+                    <td><input class="easyui-textbox" type="text" value="1" name="Lv" data-options="required:true"/></td>
+                </tr>
+
+
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="Boss List" data-options="iconCls:'icon-man',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <table id="bossDatagrid" class="easyui-datagrid" style="width:700px"
+               data-options="
+                singleSelect:true,
+                collapsible:true,
+                rownumbers:true,
+                fitColumns:true,
+                url:'/worldbossAction/getBossItemList',
+                method:'get',
+                view:groupview,
+                groupField:'week',
+                groupFormatter:function(value,rows){
+                    switch (value){
+                        case '1':
+                         weekNode = 'Monday'; break;
+                        case '2':
+                            weekNode = 'Tuesday'; break;
+                        case '3':
+                            weekNode = 'Wednesday'; break;
+                        case '4':
+                            weekNode = 'Thursday'; break;
+                        case '5':
+                            weekNode = 'Friday'; break;
+                        case '6':
+                            weekNode = 'Saturday'; break;
+                        case '7':
+                            weekNode = 'Sunday'; break;
+                    }
+                    return weekNode + ' - [ ' + rows.length + ' Item(s)]';
+                }
+            ">
+            <thead>
+            <tr>
+                <th data-options="field:'mid'">ID</th>
+                <th data-options="field:'MonsterName'">MonsterName</th>
+                <th data-options="field:'Note',formatter:formatterBNode">Note</th>
+                <th data-options="field:'Lv',formatter:formatterBLv">Lv</th>
+                <th data-options="field:'HP'">HP</th>
+                <th data-options="field:'StartTime'">StartTime</th>
+                <th data-options="field:'Methods',formatter:formatBossOper">Methods</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>

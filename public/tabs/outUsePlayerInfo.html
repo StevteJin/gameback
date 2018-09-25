@@ -1,0 +1,96 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 14px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+
+    .divFlot{
+        width: 320px;
+        float: left;
+    }
+</style>
+<script type="application/javascript" charset="utf-8">
+    $(function(){
+        $('#ouPlayerInfoForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                showOuPlayerInfo(r);
+            }
+        });
+    });
+    function showOuPlayerInfo(r){
+        var useItem = r.use;
+        var outItem = r.out;
+        var html ="<div class='divFlot'><TABLE border=1 class='table' cellSpacing=0>";
+        html +="<tr class='heart'><td>产出道具</td><td>产出数量</td></tr>";
+        for(var i=0;i<outItem.length;i++){
+            var props = outItem[i];
+            html +="<tr><td>"+props._id+"</td><td>"+props.total+"</td></tr>";
+        }
+        html += "</TABLE></div>";
+
+        html +="<div class='divFlot'><TABLE border=1 class='table' cellSpacing=0>";
+        html +="<tr class='heart'><td>消耗道具</td><td>消耗数量</td></tr>";
+        for(var i=0;i<useItem.length;i++){
+            var props = useItem[i];
+            html +="<tr><td>"+props._id+"</td><td>"+props.total+"</td></tr>";
+        }
+        html += "</TABLE></div>";
+        $('#ouPlayerInfo').html(html);
+    }
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询条件" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="ouPlayerInfoForm" action="/useOutAction/ouPlayerInfo" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>NickName:</td>
+                    <td><input class="easyui-combobox"
+                               name="nickName"
+                               id="oname"
+                               data-options="
+                                    valueField:'nickName',
+                                    textField:'nickName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/playerAction/findPlayer', { txt:newValue},function(data){
+                                                    $('#oname').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        $('#ouPlayerInfoForm').form('load',rec);
+                                    }">
+                    </td>
+                </tr>
+                <tr>
+                    <td>PID:</td>
+                    <td><input class="easyui-textbox" type="text" name="_id" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询结果" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <div id="ouPlayerInfo">
+            暂无结果......!!!
+        </div>
+    </div>
+</div>

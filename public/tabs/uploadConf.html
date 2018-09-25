@@ -1,0 +1,29 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $('#uploadConfForm').form({
+            success:function(data){
+                // var r = $.parseJSON(data);
+                $('#uploadConfForm').form('clear');
+                $.messager.alert('Info','Successfully!', 'info');
+            }
+        });
+    });
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="上传配置" data-options="iconCls:'icon-add'" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="uploadConfForm" action="/uploadAction/uploadConf" enctype="multipart/form-data" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>File:</td>
+                    <td>
+                        <input type="file" name="inputFile" multiple='mutiple' style="width:100%">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

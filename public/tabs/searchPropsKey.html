@@ -1,0 +1,81 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 14px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+</style>
+<script type="application/javascript" charset="utf-8">
+    $(function(){
+        $('#spkfrom').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                if(r.code == 200){
+                    $.messager.alert('Info', "Success!Start download txt...", 'info');
+                    window.location.href = "/txt/" + r.fileName;
+                }else{
+                    showPropsKey(r);
+                }
+            }
+        });
+    });
+
+    function showPropsKey(r){
+        var html ="<TABLE border=1 class='table' cellSpacing=0>";
+        var total = r.length;
+        html +="<tr class='heart'><td>记录</td><td colspan='3'>"+total+"</td></tr>";
+        html +="<tr class='heart'><td>KEYS</td><td>propsList</td><td>endDate</td><td>status</td></tr>";
+        for(var i=0;i<total;i++){
+            var props = r[i];
+            var status = props.status == 0 ? 'notused':'used';
+            html +="<tr><td>"+props.key+"</td><td>"+props.propsList+"</td><td>"+props.end+"</td><td>"+status+"</td></tr>";
+        }
+        html += "</TABLE>";
+        $('#spkDiv').html(html);
+    }
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询条件" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="spkfrom" action="/propsKeyAction/search" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>propsKey:</td>
+                    <td><input class="easyui-textbox" type="text" name="keys"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <label><input name="status" type="radio" value="0" />未使用 </label>
+                        <label><input name="status" type="radio" value="1" />已使用 </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <label><input type="checkbox" name="download" value="1"/>导出</label>
+                        <input type="submit" value="查询" style="float: right;"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询结果" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <div id="spkDiv">
+            暂无数据!......
+        </div>
+    </div>
+</div>

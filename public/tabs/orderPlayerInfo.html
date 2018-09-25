@@ -1,0 +1,100 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 14px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+</style>
+<script type="application/javascript" charset="utf-8">
+    $(function(){
+        $('#orderPlayerInfo').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                showOrderPlayerInfo(r);
+            }
+        });
+    });
+    function showOrderPlayerInfo(r){
+        var html ="<TABLE border=1 class='table' cellSpacing=0>";
+        var name = r._id;
+        var count = r.count;
+        var total = r.total;
+        var avg = 0;
+        if(total > 0){
+            avg = parseInt(total/count);
+        }
+        html +="<tr class='heart'><td>昵称</td><td colspan='2'>"+ name +"</td><td>充值次数</td><td colspan='2'>"+count+" 次</td></tr>";
+        html +="<tr class='heart'><td>充值数量</td><td colspan='2'>"+ total +"钻石</td><td>平均</td><td colspan='2'>"+ avg +"钻石</td></tr>";
+        html +="<tr class='heart'><td colspan='6'>记录</td></tr>";
+        html +="<tr class='heart'><td>OrderID</td><td>昵称</td><td>Amount</td><td>购买数量</td><td>备注</td><td>时间</td></tr>";
+        var items = r.items;
+        for(var i=0;i<items.length;i++){
+            var order = items[i];
+            html +="<tr><td>"+order.orderid+"</td><td>"+order.nickName+"</td><td>"+order.amount+"</td><td>"+order.payCount+"钻石</td><td>"+order.mark+"</td><td>"+formatterYMD(order.timestamp)+"</td></tr>";
+        }
+        html += "</TABLE>";
+        $('#opInfo').html(html);
+    }
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询条件" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="orderPlayerInfo" action="/orderAction/orderPlayerInfo" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>NickName:</td>
+                    <td><input class="easyui-combobox"
+                               name="nickName"
+                               id="oname"
+                               data-options="
+                                    valueField:'nickName',
+                                    textField:'nickName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/playerAction/findPlayer', { txt:newValue},function(data){
+                                                    $('#oname').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        $('#orderPlayerInfo').form('load',rec);
+                                    }">
+                    </td>
+                </tr>
+                <tr>
+                    <td>PID:</td>
+                    <td><input class="easyui-textbox" type="text" name="_id" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td>StartTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="start"></td>
+                </tr>
+                <tr>
+                    <td>EndTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="end"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询结果" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <div id="opInfo">
+            暂无结果......!!!
+        </div>
+    </div>
+</div>

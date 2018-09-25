@@ -1,0 +1,80 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $('#versForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                versList();
+                $.messager.alert('Info',r.msg, 'info');
+            }
+        });
+    });
+    $(function(){
+        versList();
+    });
+    function versList(){
+        $.get("/versAction/versList",function(list){
+            if(list.length > 0){
+                curVersion(list[0]);
+            }
+            hisVersion(list);
+        });
+    }
+
+    function curVersion(ver){
+        var ht = "<li style='width: 120px;'>" + ver.versionStr + "<font color='#CCCCCC' style='float: right'>" + ver.createDate + "</font></li>";
+        $('#curv').html(ht);
+    }
+
+    function hisVersion(list){
+        var ht = "";
+        for(var i = 0 ; i < list.length; i++){
+            if(!(i === 0)){
+                var ver = list[i];
+                ht += "<li style='width: 120px;'>" + ver.versionStr + "<font color='#CCCCCC' style='float: right'>" + ver.createDate + "</font></li>";
+            }
+        }
+        $('#hisv').html(ht);
+    }
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="Add New Version" data-options="iconCls:'icon-add'" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="versForm" action="/versAction/addNewVers" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>versionCode:</td>
+                    <td><input class="easyui-textbox" type="text" name="versionCode" data-options="required:true,prompt:'100000'"/></td>
+                </tr>
+                <tr>
+                    <td>versionStr:</td>
+                    <td><input class="easyui-textbox" type="text" name="versionStr" data-options="required:true,prompt:'1.0.0'"/></td>
+                </tr>
+                <tr>
+                    <td>downloadUri:</td>
+                    <td><input class="easyui-textbox" type="text" name="downloadUri" data-options="required:true,prompt:'https://www.pgyer.com/swzj'"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+        <div style="margin:10px 0;"></div>
+        <div>
+            <h3>当前版本</h3>
+            <div>
+                <ul id="curv">
+
+                </ul>
+            </div>
+        </div>
+        <div style="margin:10px 0;"></div>
+        <div>
+            <h3>历史版本</h3>
+            <div>
+                <ul id="hisv">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

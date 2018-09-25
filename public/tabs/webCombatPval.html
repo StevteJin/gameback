@@ -1,0 +1,154 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $('#monsterForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                if(r.code === 200){
+                    $('#monsterDatagrid').datagrid('reload');
+                    $.messager.alert('Info','Success!', 'info');
+                }else{
+                    $.messager.alert('Err',r.msg, 'info');
+                }
+            }
+        });
+    });
+
+    function setWebCombatPvalDgQuery(rec){
+        $('#pcpr').datagrid({
+            queryParams: {
+                svrName: rec.svrName
+            }
+        });
+    }
+
+    function formatRole(val,row,index){
+        if(row.role.id == 10001){
+            return "男角色";
+        }else{
+            return "女角色";
+        }
+    }
+
+    function formatLv(val,row){
+        return row.role.lv+"";
+    }
+
+    function formatHp(val,row){
+        return row.svr_combat.hp+"";
+    }
+
+    function formatMp(val,row){
+        return row.svr_combat.mp+"";
+    }
+
+    function formatAssault(val,row){
+        return row.svr_combat.assault+"";
+    }
+
+    function formatDefense(val,row){
+        return row.svr_combat.defense+"";
+    }
+
+    function formatTempo(val,row){
+        return row.svr_combat.tempo+"";
+    }
+
+    function formatHitRate(val,row){
+        return row.svr_combat.hitRate+"";
+    }
+
+    function formatDodgeRate(val,row){
+        return row.svr_combat.dodgeRate+"";
+    }
+
+    function formatCritRate(val,row){
+        return row.svr_combat.critRate+"";
+    }
+
+    function formatCritHarm(val,row){
+        return row.svr_combat.critHarm+"";
+    }
+
+    function formatStunRate(val,row){
+        return row.svr_combat.stunRate+"";
+    }
+
+    function formatCombatPowerVal(val,row){
+        return row.svr_combat.combatPowerVal+"";
+    }
+
+    function formatMOper(val,row,index){
+        return '<a href="#" class="easyui-linkbutton" onclick="wclosePlayer('+index+')">封禁</a>';
+    }
+
+    function wclosePlayer(index) {
+        $('#pcpr').datagrid('selectRow', index);// 关键在这里
+        var row = $('#pcpr').datagrid('getSelected');
+        $.post("/playerAction/closePlayer",row,function(data){
+//            var r = $.parseJSON(data);
+            if(data.code === 200){
+                $('#pcpr').datagrid('reload');
+            }else{
+                $.messager.alert('Err',data.msg, 'info');
+            }
+        });
+    }
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="Select Server Name" data-options="iconCls:'icon-add',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>ServerName:</td>
+                    <td>
+                        <input class="easyui-combobox"
+                               id="pvalSvrName"
+                               data-options="
+                                    prompt:'Please enter Name...',
+                                    valueField:'svrName',
+                                    textField:'svrName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/svrMgrAction/svrList', { txt:newValue},function(data){
+                                                    $('#pvalSvrName').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        setWebCombatPvalDgQuery(rec);
+                                    }">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="Player Combat Power Rank" data-options="iconCls:'icon-man'">
+        <table id="pcpr" class="easyui-datagrid"
+               data-options="singleSelect:true,rownumbers:true,url:'/admin/webPvalRank',method:'get',border:false,fitColumns:true">
+            <thead>
+            <tr>
+                <th data-options="field:'nickName'" rowspan="2">昵称</th>
+                <!---->
+                <th colspan="2">角色信息</th>
+                <th colspan="11">属性信息</th>
+                <th data-options="field:'Methods',align:'center',formatter:formatMOper" rowspan="2">Methods</th>
+            </tr>
+            <tr>
+                <th data-options="field:'role',formatter:formatRole">角色</th>
+                <th data-options="field:'lv',formatter:formatLv">等级</th>
+                <th data-options="field:'hp',formatter:formatHp">生命</th>
+                <th data-options="field:'mp',formatter:formatMp">魔法</th>
+                <th data-options="field:'assault',formatter:formatAssault">攻击</th>
+                <th data-options="field:'defense',formatter:formatDefense">防御</th>
+                <th data-options="field:'tempo',formatter:formatTempo">速度</th>
+                <th data-options="field:'hitRate',formatter:formatHitRate">命中</th>
+                <th data-options="field:'dodgeRate',formatter:formatDodgeRate">躲避</th>
+                <th data-options="field:'critRate',formatter:formatCritRate">暴率</th>
+                <th data-options="field:'critHarm',formatter:formatCritHarm">暴伤</th>
+                <th data-options="field:'stunRate',formatter:formatStunRate">击晕</th>
+                <th data-options="field:'combatPowerVal',formatter:formatCombatPowerVal">战力</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>

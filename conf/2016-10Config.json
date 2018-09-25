@@ -1,0 +1,157 @@
+[
+  {
+    "_id": 1,
+    "Prop": 3000,
+    "Number": 10000
+  },
+  {
+    "_id": 2,
+    "Prop": 606,
+    "Number": 25
+  },
+  {
+    "_id": 3,
+    "Prop": 3001,
+    "Number": 40
+  },
+  {
+    "_id": 4,
+    "Prop": 3002,
+    "Number": 200
+  },
+  {
+    "_id": 5,
+    "Prop": 2065,
+    "Number": 15
+  },
+  {
+    "_id": 6,
+    "Prop": 1,
+    "Number": 10
+  },
+  {
+    "_id": 7,
+    "Prop": 401,
+    "Number": 50
+  },
+  {
+    "_id": 8,
+    "Prop": 3000,
+    "Number": 20000
+  },
+  {
+    "_id": 9,
+    "Prop": 606,
+    "Number": 25
+  },
+  {
+    "_id": 10,
+    "Prop": 2065,
+    "Number": 15
+  },
+  {
+    "_id": 11,
+    "Prop": 3001,
+    "Number": 50
+  },
+  {
+    "_id": 12,
+    "Prop": 3002,
+    "Number": 300
+  },
+  {
+    "_id": 13,
+    "Prop": 1,
+    "Number": 15
+  },
+  {
+    "_id": 14,
+    "Prop": 6,
+    "Number": 30
+  },
+  {
+    "_id": 15,
+    "Prop": 2065,
+    "Number": 15
+  },
+  {
+    "_id": 16,
+    "Prop": 3000,
+    "Number": 30000
+  },
+  {
+    "_id": 17,
+    "Prop": 606,
+    "Number": 25
+  },
+  {
+    "_id": 18,
+    "Prop": 3001,
+    "Number": 60
+  },
+  {
+    "_id": 19,
+    "Prop": 3002,
+    "Number": 400
+  },
+  {
+    "_id": 20,
+    "Prop": 2065,
+    "Number": 15
+  },
+  {
+    "_id": 21,
+    "Prop": 1,
+    "Number": 20
+  },
+  {
+    "_id": 22,
+    "Prop": 6,
+    "Number": 40
+  },
+  {
+    "_id": 23,
+    "Prop": 3000,
+    "Number": 40000
+  },
+  {
+    "_id": 24,
+    "Prop": 606,
+    "Number": 25
+  },
+  {
+    "_id": 25,
+    "Prop": 2065,
+    "Number": 15
+  },
+  {
+    "_id": 26,
+    "Prop": 3001,
+    "Number": 60
+  },
+  {
+    "_id": 27,
+    "Prop": 3002,
+    "Number": 400
+  },
+  {
+    "_id": 28,
+    "Prop": 1,
+    "Number": 20
+  },
+  {
+    "_id": 29,
+    "Prop": 6,
+    "Number": 40
+  },
+  {
+    "_id": 30,
+    "Prop": 2065,
+    "Number": 15
+  },
+  {
+    "_id": 31,
+    "Prop": 7,
+    "Number": 2
+  }
+]

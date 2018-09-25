@@ -1,0 +1,46 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 14px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+</style>
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $.get("/orderAction/orderLv", function(data){
+//            console.info(data);
+            showOrderLv(data);
+        });
+    });
+
+    function showOrderLv(data){
+        var html ="<TABLE border=1 class='table' cellSpacing=0>";
+        html +="<tr class='heart'><td>等级</td><td>次数</td><td>充值数量</td><td>平均</td></tr>";
+        for(var i = 0 ; i<data.length; i++){
+            var name = data[i]._id;
+            var count = data[i].count;
+            var total = data[i].total;
+            var avg = parseInt(total / count);
+            html +="<tr><td>"+name+"</td><td>"+count+"次</td><td>"+total+"钻石</td><td>"+avg+"钻石</td></tr>";
+        }
+        html += "</TABLE>";
+        $('#orderLv').html(html);
+    }
+</script>
+<div class="tabsContent">
+    <div id="orderLv">
+        暂无数据......!!!
+    </div>
+</div>

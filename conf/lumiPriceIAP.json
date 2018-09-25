@@ -1,0 +1,82 @@
+[
+  {
+    "_id": "com.RaytheonGame.SWZJ.appstore.250",
+    "Commodity": 25,
+    "Count": 250,
+    "Count2": 0,
+    "Count3": 250,
+    "Percentage": 0,
+    "DonateDia": 0,
+    "Percentage2": 0
+  },
+  {
+    "_id": "com.RaytheonGame.SWZJ.appstore.60",
+    "Commodity": 6,
+    "Count": 60,
+    "Count2": 0,
+    "Count3": 60,
+    "Percentage": 0,
+    "DonateDia": 60,
+    "Percentage2": 1
+  },
+  {
+    "_id": "com.RaytheonGame.SWZJ.appstore.300",
+    "Commodity": 30,
+    "Count": 300,
+    "Count2": 20,
+    "Count3": 320,
+    "Percentage": 0.02,
+    "DonateDia": 300,
+    "Percentage2": 0.980392156862745
+  },
+  {
+    "_id": "com.RaytheonGame.SWZJ.appstore.680",
+    "Commodity": 68,
+    "Count": 680,
+    "Count2": 50,
+    "Count3": 730,
+    "Percentage": 0.03,
+    "DonateDia": 680,
+    "Percentage2": 0.967741935483871
+  },
+  {
+    "_id": "com.RaytheonGame.SWZJ.appstore.980",
+    "Commodity": 98,
+    "Count": 980,
+    "Count2": 80,
+    "Count3": 1060,
+    "Percentage": 0.04,
+    "DonateDia": 980,
+    "Percentage2": 0.961538461538462
+  },
+  {
+    "_id": "com.RaytheonGame.SWZJ.appstore.1980",
+    "Commodity": 198,
+    "Count": 1980,
+    "Count2": 200,
+    "Count3": 2180,
+    "Percentage": 0.05,
+    "DonateDia": 1980,
+    "Percentage2": 0.952380952380952
+  },
+  {
+    "_id": "com.RaytheonGame.SWZJ.appstore.3280",
+    "Commodity": 328,
+    "Count": 3280,
+    "Count2": 600,
+    "Count3": 3880,
+    "Percentage": 0.06,
+    "DonateDia": 3280,
+    "Percentage2": 0.94
+  },
+  {
+    "_id": "com.RaytheonGame.SWZJ.appstore.6480",
+    "Commodity": 648,
+    "Count": 6480,
+    "Count2": 2000,
+    "Count3": 8480,
+    "Percentage": 0.08,
+    "DonateDia": 6480,
+    "Percentage2": 0.925925925925926
+  }
+]

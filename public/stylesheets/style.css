@@ -1,0 +1,48 @@
+*{
+	font-size:12px;
+}
+body {
+    font-family:verdana,helvetica,arial,sans-serif;
+    padding:20px;
+    font-size:12px;
+    margin:0;
+}
+h2 {
+    font-size:18px;
+    font-weight:bold;
+    margin:0;
+    margin-bottom:15px;
+}
+.demo-info{
+	padding:0 0 12px 0;
+}
+.demo-tip{
+	display:none;
+}
+.tabsContent{
+    padding: 10px;
+    padding-right: 15px;
+}
+
+#menu {
+    font:12px verdana, arial, sans-serif;
+}
+#menu, #menu li {
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+#menu li a {
+    display:block;
+    line-height:30px;
+    text-align:center;
+    color:#000000;
+    text-decoration:none;
+    border-bottom:1px solid #C0C0C0;
+}
+
+#menu li a:hover {
+    background:#F0F8FF;
+    color:#000000;
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "_id": "com.t1gamer.swzj.month",
+    "Commodity": 25,
+    "Count": 250,
+    "Count2": 0,
+    "Count3": 250,
+    "Percentage": 0,
+    "DonateDia": 0,
+    "Percentage2": 0
+  },
+  {
+    "_id": "com.t1gamer.swzj.60",
+    "Commodity": 6,
+    "Count": 60,
+    "Count2": 0,
+    "Count3": 60,
+    "Percentage": 0,
+    "DonateDia": 60,
+    "Percentage2": 1
+  },
+  {
+    "_id": "com.t1gamer.swzj.250",
+    "Commodity": 30,
+    "Count": 300,
+    "Count2": 20,
+    "Count3": 320,
+    "Percentage": 0.06666666666666667,
+    "DonateDia": 300,
+    "Percentage2": 0.9375
+  },
+  {
+    "_id": "com.t1gamer.swzj.680",
+    "Commodity": 68,
+    "Count": 680,
+    "Count2": 50,
+    "Count3": 730,
+    "Percentage": 0.07352941176470588,
+    "DonateDia": 680,
+    "Percentage2": 0.9315068493150684
+  },
+  {
+    "_id": "com.t1gamer.swzj.980",
+    "Commodity": 128,
+    "Count": 1280,
+    "Count2": 120,
+    "Count3": 1400,
+    "Percentage": 0.09375,
+    "DonateDia": 1280,
+    "Percentage2": 0.9142857142857143
+  },
+  {
+    "_id": "com.t1gamer.swzj.1980",
+    "Commodity": 328,
+    "Count": 3280,
+    "Count2": 600,
+    "Count3": 3880,
+    "Percentage": 0.18292682926829268,
+    "DonateDia": 3280,
+    "Percentage2": 0.845360824742268
+  },
+  {
+    "_id": "com.t1gamer.swzj.3190",
+    "Commodity": 648,
+    "Count": 6480,
+    "Count2": 1520,
+    "Count3": 8000,
+    "Percentage": 0.2345679012345679,
+    "DonateDia": 6480,
+    "Percentage2": 0.81
+  },
+  {
+    "_id": "com.t1gamer.swzj.6480",
+    "Commodity": 2048,
+    "Count": 20480,
+    "Count2": 6000,
+    "Count3": 26480,
+    "Percentage": 0.29296875,
+    "DonateDia": 20480,
+    "Percentage2": 0.7734138972809668
+  }
+]

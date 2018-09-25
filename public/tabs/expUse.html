@@ -1,0 +1,83 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 14px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+</style>
+<script type="application/javascript" charset="utf-8">
+    $(function(){
+        $('#expUseForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                showExpUse(r);
+            }
+        });
+    });
+    function showExpUse(r){
+        var count = r.length;
+        var html ="<TABLE border=1 class='table' cellSpacing=0>";
+        html +="<tr class='heart'><td>itemCount</td><td colspan='5'>"+count+"</td></tr>";
+        html +="<tr class='heart'><td>PID</td><td>玩家</td><td>道具ID</td><td>产出数量</td><td>消耗数量</td><td>检测时间</td></tr>";
+        for(var i=0;i< count;i++){
+            var item = r[i];
+            html +="<tr class='heart'><td>"+item.pid+"</td><td>"+item.nickName+"</td><td>"+item.propsId+"</td><td>"+item.outTotal+"</td><td>"+item.useTotal+"</td><td>"+formatterMyDate(item.timestamp)+"</td></tr>";
+        }
+        html += "</TABLE>";
+        $('#expUseDiv').html(html);
+    }
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询条件" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="expUseForm" action="/useOutAction/expUse" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>NickName:</td>
+                    <td><input class="easyui-combobox"
+                               name="nickName"
+                               id="eoname"
+                               data-options="
+                                    valueField:'nickName',
+                                    textField:'nickName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/playerAction/findPlayer', { txt:newValue},function(data){
+                                                    $('#eoname').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        $('#expUseForm').form('load',rec);
+                                    }">
+                    </td>
+                </tr>
+                <tr>
+                    <td>PID:</td>
+                    <td><input class="easyui-textbox" type="text" name="_id" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询结果" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <div id="expUseDiv">
+            暂无结果......!!!
+        </div>
+    </div>
+</div>

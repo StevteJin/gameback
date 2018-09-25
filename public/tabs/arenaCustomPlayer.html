@@ -1,0 +1,120 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 14px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+</style>
+<script language="javascript" charset="utf-8">
+    $(function(){
+
+    });
+    var rs = {"challenge":{},vs:[]};
+    function challenge(){
+        var nickName = acPlayerForm['nickName'].value;
+        var pid = acPlayerForm['_id'].value;
+        var player = {"nickName":nickName,"pid":pid};
+        rs.challenge = player;
+        showRs();
+//        console.info(rs);
+    }
+    function addVs(){
+        var nickName = acPlayerForm['nickName'].value;
+        var pid = acPlayerForm['_id'].value;
+        var player = {"nickName":nickName,"pid":pid};
+        if(rs.vs.length < 3){
+            rs.vs.push(player);
+        }else{
+            $.messager.alert('Info',"自定义挑战者不能超过3个", 'info');
+        }
+//        console.info(rs);
+        showRs();
+    }
+
+    function sub(){
+        var d = {};
+        d.pid = rs.challenge.pid;
+        for(var i = 0 ; i < rs.vs.length; i++){
+            if(i == 0){
+                d.nickName1 = rs.vs[i].nickName;
+            }
+            if(i == 1){
+                d.nickName2 = rs.vs[i].nickName;
+            }
+            if(i == 2){
+                d.nickName3 = rs.vs[i].nickName;
+            }
+        }
+
+        $.post("/playerAction/arenaCustom", d,
+                function(data){
+                    rs = {"challenge":{},vs:[]};
+                    $('#vsp').html("");
+                    $.messager.alert('Info',data.msg, 'info');
+                });
+    }
+
+    function showRs(){
+        var html ="<TABLE border=1 class='table' cellSpacing=0>";
+        html += "<tr><td rowspan='8' class='heart'>挑战信息</td><td>挑战者</td><td>" + rs.challenge.nickName + "</td></tr>";
+        for(var i = 0 ; i < rs.vs.length;i++){
+            html += "<tr><td>对战者</td><td>" + rs.vs[i].nickName + "</td></tr>";
+        }
+        html +="</TABLE>";
+        $('#vsp').html(html);
+    }
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="自定义挑战者" data-options="iconCls:'icon-add'" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="acPlayerForm" action="" class="easyui-form" method="post">
+            <!--<input type="hidden" name="propsID" value="VIP">-->
+            <table cellpadding="5">
+                <tr>
+                    <td>NickName:</td>
+                    <td><input class="easyui-combobox"
+                               name="nickName"
+                               id="cnname"
+                               data-options="
+                                    valueField:'nickName',
+                                    textField:'nickName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/playerAction/findPlayer', { txt:newValue},function(data){
+                                                    $('#cnname').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        $('#acPlayerForm').form('load',rec);
+                                    }">
+                    </td>
+                </tr>
+                <tr>
+                    <td>PID:</td>
+                    <td><input class="easyui-textbox" type="text" name="_id" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <a href="#" class="easyui-linkbutton" style="float: right;margin-left: 10px;" onclick="sub()">确定</a>
+                        <a href="#" class="easyui-linkbutton" style="float: right;margin-left: 10px;" onclick="addVs()">对战者</a>
+                        <a href="#" class="easyui-linkbutton" style="float: right;margin-left: 10px;" onclick="challenge()">挑战者</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div id="vsp">
+
+        </div>
+    </div>
+</div>

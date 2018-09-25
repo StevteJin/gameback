@@ -1,0 +1,76 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $('#plForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                $('#plFormDatagrid').datagrid('reload');
+                $.messager.alert('Info', r.msg, 'info');
+            }
+        });
+    });
+
+    function formatMMOper(val,row,index){
+        return '<a href="#" class="easyui-linkbutton" onclick="delWhiteList('+index+')">Remove</a>';
+    }
+
+    function delWhiteList(index){
+        $('#plFormDatagrid').datagrid('selectRow', index);// 关键在这里
+        var row = $('#plFormDatagrid').datagrid('getSelected');
+        $.post("/admin/delwhiteList",row,function(data){
+            $('#plFormDatagrid').datagrid('reload');
+        });
+    }
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="添加测试玩家" data-options="iconCls:'icon-add'">
+        <form id="plForm" action="/admin/addwhiteList" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>NickName:</td>
+                    <td><input class="easyui-combobox"
+                               name="nickName"
+                               id="nnname"
+                               data-options="
+                                    valueField:'nickName',
+                                    textField:'nickName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/playerAction/findPlayer', { txt:newValue},function(data){
+                                                    $('#nnname').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        $('#plForm').form('load', rec);
+                                    }">
+                    </td>
+                </tr>
+                <tr>
+                    <td>PID</td>
+                    <td><label><input class="easyui-textbox" type="text" name="_id" data-options="required:true" style="width: 180px;"/></label></td>
+                </tr>
+                <tr>
+                    <td>UID</td>
+                    <td><label><input class="easyui-textbox" type="text" name="uid" data-options="required:true" style="width: 180px;"/></label></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+            
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="测试名单" data-options="iconCls:'icon-man'">
+        <table id="plFormDatagrid" class="easyui-datagrid"
+               data-options="singleSelect:true,url:'/admin/whiteList',method:'get',border:false,fitColumns:true,rownumbers:true">
+            <thead>
+            <tr>
+                <th data-options="field:'nickName'">NickName</th>
+                <th data-options="field:'uid'">Uid</th>
+                <th data-options="field:'Methods',align:'center',formatter:formatMMOper">Methods</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>

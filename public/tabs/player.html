@@ -1,0 +1,274 @@
+<script language="javascript" charset="utf-8">
+
+    function formatterItem(val,row,index){
+        var id = row.id;
+        var item = itemConfg({'iid':id}).first();
+        return item.Name;
+    }
+
+    function formatterItemNote(val,row,index){
+        var id = row.id;
+        var item = itemConfg({'iid':id}).first();
+        return item.Note;
+    }
+
+    var pid = undefined;
+    var editIndex = undefined;
+    function endEditing(){
+        if (editIndex == undefined){return true}
+        if ($('#GameMoneyItems').datagrid('validateRow', editIndex)){
+            $('#GameMoneyItems').datagrid('endEdit', editIndex);
+            $('#GameMoneyItems').datagrid('rejectChanges');
+            editIndex = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function onClickCell(index, field){
+        if (editIndex != index){
+            if (endEditing()){
+                $('#GameMoneyItems').datagrid('selectRow', index)
+                        .datagrid('beginEdit', index);
+                var ed = $('#GameMoneyItems').datagrid('getEditor', {index:index,field:field});
+                if (ed){
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                }
+                editIndex = index;
+            } else {
+                setTimeout(function(){
+                    $('#GameMoneyItems').datagrid('selectRow', editIndex);
+                },0);
+            }
+        }
+    }
+
+    function accept(){
+        if (editIndex == undefined){return true}
+        if ($('#GameMoneyItems').datagrid('validateRow', editIndex)){
+            $('#GameMoneyItems').datagrid('endEdit', editIndex);
+
+            var rows = $('#GameMoneyItems').datagrid('getChanges');
+            if(rows.length > 0){
+                rows[0].pid = pid;
+                $.post('/admin/updateGameMoneyItems', rows[0],function(data){
+                    console.info(data);
+                });
+            }
+            $('#GameMoneyItems').datagrid('acceptChanges');
+            editIndex = undefined;
+        }
+    }
+    function reject(){
+        $('#GameMoneyItems').datagrid('rejectChanges');
+        editIndex = undefined;
+    }
+
+    var editIndex1 = undefined;
+    function endEditing1(){
+        if (editIndex1 == undefined){return true}
+        if ($('#EquipAdvanceList').datagrid('validateRow', editIndex1)){
+            $('#EquipAdvanceList').datagrid('endEdit', editIndex1);
+            $('#EquipAdvanceList').datagrid('rejectChanges');
+            editIndex1 = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function onClickCell1(index, field){
+        if (editIndex1 != index){
+            if (endEditing1()){
+                $('#EquipAdvanceList').datagrid('selectRow', index)
+                        .datagrid('beginEdit', index);
+                var ed = $('#EquipAdvanceList').datagrid('getEditor', {index:index,field:field});
+                if (ed){
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                }
+                editIndex1 = index;
+            } else {
+                setTimeout(function(){
+                    $('#EquipAdvanceList').datagrid('selectRow', editIndex1);
+                },0);
+            }
+        }
+    }
+
+    function accept1(){
+        if (editIndex1 == undefined){return true}
+        if ($('#EquipAdvanceList').datagrid('validateRow', editIndex1)){
+            $('#EquipAdvanceList').datagrid('endEdit', editIndex1);
+
+            var rows = $('#EquipAdvanceList').datagrid('getChanges');
+            if(rows.length > 0){
+                rows[0].pid = pid;
+                $.post('/admin/updateEquipAdvanceList', rows[0],function(data){
+                    console.info(data);
+                });
+            }
+            $('#EquipAdvanceList').datagrid('acceptChanges');
+            editIndex1 = undefined;
+        }
+    }
+
+    function reject1(){
+        $('#EquipAdvanceList').datagrid('rejectChanges');
+        editIndex1 = undefined;
+    }
+
+    var editIndex2 = undefined;
+    function endEditing2(){
+        if (editIndex1 == undefined){return true}
+        if ($('#EquipChipItems').datagrid('validateRow', editIndex2)){
+            $('#EquipChipItems').datagrid('endEdit', editIndex2);
+            $('#EquipChipItems').datagrid('rejectChanges');
+            editIndex2 = undefined;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function onClickCell2(index, field){
+        if (editIndex2 != index){
+            if (endEditing2()){
+                $('#EquipChipItems').datagrid('selectRow', index)
+                        .datagrid('beginEdit', index);
+                var ed = $('#EquipChipItems').datagrid('getEditor', {index:index,field:field});
+                if (ed){
+                    ($(ed.target).data('textbox') ? $(ed.target).textbox('textbox') : $(ed.target)).focus();
+                }
+                editIndex2 = index;
+            } else {
+                setTimeout(function(){
+                    $('#EquipChipItems').datagrid('selectRow', editIndex2);
+                },0);
+            }
+        }
+    }
+
+    function accept2(){
+        if (editIndex2 == undefined){return true}
+        if ($('#EquipChipItems').datagrid('validateRow', editIndex2)){
+            $('#EquipChipItems').datagrid('endEdit', editIndex2);
+
+            var rows = $('#EquipChipItems').datagrid('getChanges');
+            if(rows.length > 0){
+                rows[0].pid = pid;
+                $.post('/admin/updateEquipChipItems', rows[0],function(data){
+                    console.info(data);
+                });
+            }
+            $('#EquipChipItems').datagrid('acceptChanges');
+            editIndex2 = undefined;
+        }
+    }
+
+    function reject2(){
+        $('#EquipChipItems').datagrid('rejectChanges');
+        editIndex2 = undefined;
+    }
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="Player Manager" data-options="iconCls:'icon-man',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="pform" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>NickName:</td>
+                    <td><input class="easyui-combobox"
+                               name="nickName"
+                               id="nname"
+                               data-options="
+                                    valueField:'nickName',
+                                    textField:'nickName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/admin/findPlayer', { txt:newValue},function(data){
+                                                    $('#nname').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        $('#pform').form('load',rec);
+                                        $('#GameMoneyItems').datagrid('loadData',rec.gameMoneyItems);
+                                        $('#EquipAdvanceList').datagrid('loadData',rec.equipAdvanceItems);
+                                        $('#EquipChipItems').datagrid('loadData',rec.equipChipItems);
+                                        pid = rec._id;
+                                    }">
+                    </td>
+                </tr>
+                <tr>
+                    <td>PID:</td>
+                    <td><input class="easyui-textbox" type="text" name="_id" data-options="readonly:true,required:true,width:200"/></td>
+                </tr>
+                <tr>
+                    <td>PlayerType:</td>
+                    <td><input class="easyui-textbox" type="text" name="playerType" data-options="readonly:true,required:true,width:200"/></td>
+                </tr>
+                <tr>
+                    <td>Vip:</td>
+                    <td><input class="easyui-textbox" type="text" name="vip" data-options="readonly:true,required:true,width:200"/></td>
+                </tr>
+                <tr>
+                    <td>VipExp:</td>
+                    <td><input class="easyui-textbox" type="text" name="vipExp" data-options="readonly:true,required:true,width:200"/></td>
+                </tr>
+            </table>
+        </form>
+        <div style="margin:10px 0;"></div>
+        <table class="easyui-datagrid" id="GameMoneyItems" title="GameMoneyItems" style="width:700px;"
+               data-options="toolbar: '#tb',singleSelect:true,collapsible:true,onClickCell:onClickCell,fitColumns:true">
+            <thead>
+            <tr>
+                <th data-options="field:'id'">Item ID</th>
+                <th data-options="field:'name',width:20,formatter:formatterItem">Name</th>
+                <th data-options="field:'note',width:80,formatter:formatterItemNote">Note</th>
+                <th data-options="field:'lv'">Lv</th>
+                <th data-options="field:'num',align:'right',editor:'numberbox'">Number</th>
+                <th data-options="field:'rare',align:'right'">Rare</th>
+            </tr>
+            </thead>
+        </table>
+        <div style="margin:10px 0;"></div>
+        <table class="easyui-datagrid" id="EquipAdvanceList" title="EquipAdvanceList" style="width:700px;"
+               data-options="toolbar: '#tb1',singleSelect:true,collapsible:true,onClickCell:onClickCell1,fitColumns:true">
+            <thead>
+            <tr>
+                <th data-options="field:'id'">Item ID</th>
+                <th data-options="field:'name',width:20,formatter:formatterItem">Name</th>
+                <th data-options="field:'note',width:80,formatter:formatterItemNote">Note</th>
+                <th data-options="field:'lv'">Lv</th>
+                <th data-options="field:'num',align:'right',editor:'numberbox'">Number</th>
+                <th data-options="field:'rare',align:'right'">Rare</th>
+            </tr>
+            </thead>
+        </table>
+        <div style="margin:10px 0;"></div>
+        <table class="easyui-datagrid" id="EquipChipItems" title="EquipChipItems" style="width:700px;"
+               data-options="toolbar: '#tb2',singleSelect:true,collapsible:true,onClickCell:onClickCell2,fitColumns:true">
+            <thead>
+            <tr>
+                <th data-options="field:'id'">Item ID</th>
+                <th data-options="field:'name',width:30,formatter:formatterItem">Name</th>
+                <th data-options="field:'note',width:80,formatter:formatterItemNote">Note</th>
+                <th data-options="field:'lv'">Lv</th>
+                <th data-options="field:'num',align:'right',editor:'numberbox'">Number</th>
+                <th data-options="field:'rare',align:'right'">Rare</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="tb" style="height:auto">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">Accept</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">Reject</a>
+    </div>
+
+    <div id="tb1" style="height:auto">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept1()">Accept</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject1()">Reject</a>
+    </div>
+
+    <div id="tb2" style="height:auto">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept2()">Accept</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject2()">Reject</a>
+    </div>
+    <div style="margin:10px 0;"></div>
+</div>

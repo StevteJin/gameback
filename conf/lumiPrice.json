@@ -1,0 +1,122 @@
+[
+  {
+    "_id": 1,
+    "Commodity": 100000,
+    "Count": 600,
+    "Count2": 0,
+    "Count3": 600,
+    "Percentage": 0,
+    "DonateDia": 0,
+    "Percentage2": 0
+  },
+  {
+    "_id": 2,
+    "Commodity": 10000,
+    "Count": 100,
+    "Count2": 0,
+    "Count3": 100,
+    "Percentage": 0,
+    "DonateDia": 100,
+    "Percentage2": 1
+  },
+  {
+    "_id": 3,
+    "Commodity": 20000,
+    "Count": 200,
+    "Count2": 0,
+    "Count3": 200,
+    "Percentage": 0,
+    "DonateDia": 200,
+    "Percentage2": 1
+  },
+  {
+    "_id": 4,
+    "Commodity": 30000,
+    "Count": 300,
+    "Count2": 0,
+    "Count3": 300,
+    "Percentage": 0,
+    "DonateDia": 300,
+    "Percentage2": 1
+  },
+  {
+    "_id": 5,
+    "Commodity": 50000,
+    "Count": 500,
+    "Count2": 0,
+    "Count3": 500,
+    "Percentage": 0,
+    "DonateDia": 500,
+    "Percentage2": 1
+  },
+  {
+    "_id": 6,
+    "Commodity": 100000,
+    "Count": 1000,
+    "Count2": 20,
+    "Count3": 1020,
+    "Percentage": 0.02,
+    "DonateDia": 1000,
+    "Percentage2": 0.980392156862745
+  },
+  {
+    "_id": 7,
+    "Commodity": 200000,
+    "Count": 2000,
+    "Count2": 60,
+    "Count3": 2060,
+    "Percentage": 0.03,
+    "DonateDia": 2000,
+    "Percentage2": 0.970873786407767
+  },
+  {
+    "_id": 8,
+    "Commodity": 300000,
+    "Count": 3000,
+    "Count2": 120,
+    "Count3": 3120,
+    "Percentage": 0.04,
+    "DonateDia": 3000,
+    "Percentage2": 0.961538461538462
+  },
+  {
+    "_id": 9,
+    "Commodity": 500000,
+    "Count": 5000,
+    "Count2": 250,
+    "Count3": 5250,
+    "Percentage": 0.05,
+    "DonateDia": 5000,
+    "Percentage2": 0.952380952380952
+  },
+  {
+    "_id": 10,
+    "Commodity": 1000000,
+    "Count": 10000,
+    "Count2": 600,
+    "Count3": 10600,
+    "Percentage": 0.06,
+    "DonateDia": 10000,
+    "Percentage2": 0.943396226415094
+  },
+  {
+    "_id": 11,
+    "Commodity": 2000000,
+    "Count": 20000,
+    "Count2": 1600,
+    "Count3": 21600,
+    "Percentage": 0.08,
+    "DonateDia": 20000,
+    "Percentage2": 0.925925925925926
+  },
+  {
+    "_id": 12,
+    "Commodity": 5000000,
+    "Count": 50000,
+    "Count2": 5000,
+    "Count3": 55000,
+    "Percentage": 0.1,
+    "DonateDia": 50000,
+    "Percentage2": 0.909090909090909
+  }
+]

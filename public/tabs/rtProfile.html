@@ -1,0 +1,53 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $.get("/statisticAction/realTime", function(data){
+            var newPlayerCount = '<li>新增用户 : ' + data.newPlayerCount + '</li>';
+            $('#realTime').append(newPlayerCount);
+            var startCount = '<li>启动次数 : ' + data.startCount + '</li>';
+            $('#realTime').append(startCount);
+            var cAuPlayerCount = '<li>当前活跃用户 : ' + data.cAuPlayerCount + '</li>';
+            $('#realTime').append(cAuPlayerCount);
+            var payPlayerCount = '<li>付费用户 : ' + data.payPlayerCount + '</li>';
+            $('#realTime').append(payPlayerCount);
+            var payMoneyCount = '<li>付费金额 : ' + data.payMoneyCount + '</li>';
+            $('#realTime').append(payMoneyCount);
+            var newPayPlayerCount = '<li>新增付费用户 : ' + data.newPayPlayerCount + '</li>';
+            $('#realTime').append(newPayPlayerCount);
+        });
+
+        $.get("/statisticAction/profile", function(data){
+            var playerCount = '<li>累计用户 : ' + data.playerCount + '</li>';
+            $('#profile').append(playerCount);
+            var wauCount = '<li>过去7天活跃用户 : ' + data.wauCount + '</li>';
+            $('#profile').append(wauCount);
+            var wauTimeSum = '<li>过去7天平均使用时长 : ' + data.wauTimeSum + '</li>';
+            $('#profile').append(wauTimeSum);
+            var mauCount = '<li>过去30天活跃用户 : ' + data.mauCount + '</li>';
+            $('#profile').append(mauCount);
+            var mauTimeSum = '<li>过去30天平均使用时长 : ' + data.mauTimeSum + '</li>';
+            $('#profile').append(mauTimeSum);
+            var allPayPlayerCount = '<li>累计付费用户 : ' + data.allPayPlayerCount + '</li>';
+            $('#profile').append(allPayPlayerCount);
+            var allPayMoneySum = '<li>累计付费金额 : ' + data.allPayMoneySum + '</li>';
+            $('#profile').append(allPayMoneySum);
+            var oddsPay = '<li>付费率: : ' + data.oddsPay + '%</li>';
+            $('#profile').append(oddsPay);
+            var arpu = '<li>ARPU : ' + data.arpu + '</li>';
+            $('#profile').append(arpu);
+            var arppu = '<li>ARPPU : ' + data.arppu + '</li>';
+            $('#profile').append(arppu);
+        });
+    });
+
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="实时统计" data-options="iconCls:'icon-man'">
+        <ul id="realTime" style="font-size: 30px;">
+        </ul>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="整体趋势" data-options="iconCls:'icon-man'">
+        <ul id="profile" style="font-size: 30px;">
+        </ul>
+    </div>
+</div>

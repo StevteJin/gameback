@@ -1,0 +1,62 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $('#orderSearchForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                $('#orderListDatagrid').datagrid('loadData', r.dts);
+                $.messager.alert('Info', r.msg, 'info');
+            }
+        });
+    });
+
+    function foratterOrderDate(val,row){
+        return formatterMyDate(val);
+    }
+</script>
+
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询条件" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="orderSearchForm" action="/orderAction/orderList" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>Order ID:</td>
+                    <td colspan="3"><input class="easyui-textbox" type="text" name="orderid" data-options="prompt:'enter orderid'" style="width:350px"/></td>
+                </tr>
+                <tr>
+                    <td>NickName:</td>
+                    <td colspan="3"><input class="easyui-textbox" type="text" name="nickName" data-options="prompt:'enter nickName'" style="width:350px"/></td>
+                </tr>
+                <tr>
+                    <td>StartTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="start"></td>
+                    <td>EndTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="end"></td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td><input type="submit" value="Search" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+        <div style="margin:10px 0;"></div>
+            <table id="orderListDatagrid" class="easyui-datagrid" title="Order List"
+                   data-options="singleSelect:true,border:true,fitColumns:true">
+                <thead>
+                    <tr>
+                        <th data-options="field:'orderid'">OrderID</th>
+                        <th data-options="field:'currency'">Currency</th>
+                        <th data-options="field:'paytype'">PayType</th>
+                        <th data-options="field:'amount'">Amount</th>
+                        <th data-options="field:'payCount'">PayCount</th>
+                        <th data-options="field:'extraCount'">ExtraCount</th>
+                        <th data-options="field:'count'">Count</th>
+                        <th data-options="field:'firstCount'">FirstCount</th>
+                        <th data-options="field:'nickName'">NickName</th>
+                        <th data-options="field:'mark'">Mark</th>
+                        <th data-options="field:'timestamp',formatter:foratterOrderDate">Time</th>
+                    </tr>
+                </thead>
+            </table>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        $('#additionalForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                if(r.code === 200){
+                    $('#ectypeDatagrid').datagrid('reload');
+                    $.messager.alert('Info','Success!', 'info');
+                }else{
+                    $.messager.alert('Err',r.msg, 'info');
+                }
+            }
+        });
+    });
+
+    function formatEctypeOper(val,row,index){
+        return '<a href="#" class="easyui-linkbutton" onclick="delEctype('+index+')">Remove</a>';
+    }
+
+    function delEctype(index){
+        $('#ectypeDatagrid').datagrid('selectRow', index);// 关键在这里
+        var row = $('#ectypeDatagrid').datagrid('getSelected');
+        $.post("/ectypeAction/moveEctype",row,function(data){
+//            var r = $.parseJSON(data);
+            if(data.code === 200){
+                $('#ectypeDatagrid').datagrid('deleteRow', index);
+            }else{
+                $.messager.alert('Err',data.msg, 'info');
+            }
+        });
+    }
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="additional Ectype" data-options="iconCls:'icon-add',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="additionalForm" action="/ectypeAction/add" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>Date:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="Start"></td>
+                </tr>
+                <tr>
+                    <td>EctypeName:</td>
+                    <td>
+                        <select class="easyui-combobox" name="ectypeName" data-options="required:true,panelHeight:'auto',multiple:true" style="width:320px;">
+                            <option value="DragonValley">DragonValley</option>
+                            <option value="GoblinForest">GoblinForest</option>
+                            <option value="IceArctic">IceArctic</option>
+                            <option value="DwarfValley">DwarfValley</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="Additional Ectype" data-options="iconCls:'icon-man',collapsible:true">
+        <table id="ectypeDatagrid" class="easyui-datagrid"
+               data-options="singleSelect:true,url:'/ectypeAction/getEctypeList',method:'get',border:false,fitColumns:true">
+            <thead>
+            <tr>
+                <th data-options="field:'Start'">Data</th>
+                <th data-options="field:'ectypeName'">EctypeName</th>
+                <th data-options="field:'Methods',formatter:formatEctypeOper">Methods</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>

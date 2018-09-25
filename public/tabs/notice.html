@@ -1,0 +1,55 @@
+<script type="application/javascript" charset="utf-8">
+    $(function(){
+        $('#noticeFm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                $.messager.alert('Info',"Successfully!", 'info');
+            }
+        });
+    });
+
+    function getNotice(rec){
+        $.post("/noticeAction/getNotice",rec,function(data){
+            $('#noticeFm').form('load',data);
+        });
+    }
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="公告管理" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="noticeFm" action="/noticeAction/saveNotice" method="post">
+            <table cellpadding="5">
+<!--                <tr>
+                    <td>ServerName</td>
+                    <td><input class="easyui-combobox"
+                               name="svrName"
+                               id="svrName"
+                               data-options="
+                                    valueField:'svrName',
+                                    textField:'svrName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/svrMgrAction/svrList', { txt:newValue},function(data){
+                                                    $('#svrName').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        getNotice(rec);
+                                    }">
+                    </td>
+                </tr>
+-->
+                <tr>
+                    <td>Notice</td>
+                    <td>
+                        <label><input class="easyui-textbox" name="notice" style="width:328px;height:128px" data-options="label:'Message:',multiline:true"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

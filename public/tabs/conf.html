@@ -1,0 +1,75 @@
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        $('#dropoutForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                if(r.status === 200){
+                    $.messager.alert('Info','Success!', 'info');
+                }else{
+                    $.messager.alert('Err',r.msg, 'info');
+                }
+            }
+        });
+    });
+
+    $(function(){
+        $('#expForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                if(r.status === 200){
+                    $.messager.alert('Info','Success!', 'info');
+                }else{
+                    $.messager.alert('Err',r.msg, 'info');
+                }
+            }
+        });
+    });
+</script>
+
+<div class="tabsContent">
+    <div class="easyui-panel" title="DropoutMultiple" data-options="iconCls:'icon-edit',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="dropoutForm" action="/confAction/updateDropout" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>Multiple</td>
+                    <td><input class="easyui-numberbox" value="1" name="multiple" style="float: right;"/></td>
+                </tr>
+                <tr>
+                    <td>StartDate</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="StartDate"></td>
+                </tr>
+                <tr>
+                    <td>EndtDate</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="EndtDate"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="ExpMultiple" data-options="iconCls:'icon-edit',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="expForm" action="/confAction/updateExp" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>Multiple</td>
+                    <td><input class="easyui-numberbox" value="1" name="multiple" style="float: right;"/></td>
+                </tr>
+                <tr>
+                    <td>StartDate</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="StartDate"></td>
+                </tr>
+                <tr>
+                    <td>EndtDate</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="EndtDate"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

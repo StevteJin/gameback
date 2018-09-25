@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SHJGame OSS</title>
+    <link rel="stylesheet" type="text/css" href="./themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="./themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
+    <script type="text/javascript" src="./jquery.min.js"></script>
+    <script type="text/javascript" src="./jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="./datagrid-groupview.js"></script>
+    <script type="text/javascript" src="./taffy.js"></script>
+    <script type="text/javascript">
+        var itemConfg = undefined;
+        $(function(){
+            $.getJSON('menu.json',function(data){
+                $.each(data,function(i,item){
+                    var groupInfo = item;
+                    var strMenuItemHTML = "<ul id='menu'><div class='easyui-panel' data-options='fit:true,border:false'>";
+                    $.each(groupInfo.MenuItems,function(j,menu){
+                        strMenuItemHTML += '<li><a onclick="AddTab(this)" src="' + menu.Src + '" class="menuLink">' + menu.MenuName + '</a></li>';
+                    });
+                    strMenuItemHTML +="</ul></div>";
+                    $("#MenuGroup").accordion('add', {
+                        title: groupInfo.GroupName,
+                        content: strMenuItemHTML,
+                        selected: false
+                    });
+                });
+
+                if(data.length > 0){
+                    $("#MenuGroup").accordion('select',data[0].GroupName);
+                }
+            });
+        });
+
+        $(function(){
+            $.getJSON('tabs/json/ItemConfig.json',function(data){
+//                console.info(data);
+                itemConfg = TAFFY(data);
+//                console.info(itemConfg);
+            })
+        });
+
+        $(function(){
+            var loginName = sessionStorage.loginName;
+            if(loginName === undefined){
+                window.location.href="/login.html";
+            }
+        });
+
+        function toDecimal(x) {
+            var f = parseFloat(x);
+            if (isNaN(f)) {
+                return;
+            }
+            f = Math.round(x*100)/100;
+            return f;
+        }
+
+        function foratterDate(val,row){
+            var date = new Date(val * 1000);
+            var y = date.getFullYear();
+            var m = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+            var d = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+            return y + '-' + m + '-' + d;
+        }
+        function formatterYMD(val){
+            var date = new Date(val * 1000);
+            var y = date.getFullYear();
+            var m = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+            var d = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+            return y + '-' + m + '-' + d;
+        }
+
+        function formatterMyDate(val){
+            var date = new Date(val * 1000);
+            var y = date.getFullYear();
+            var m = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
+            var d = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+            var h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+            var mm = date.getMinutes()< 10 ? '0' + date.getMinutes() : date.getMinutes();
+            var s = date.getSeconds()< 10 ? '0' + date.getSeconds() : date.getSeconds();
+            return y + '-' + m + '-' + d + " " + h + ":" + mm + ":" + s;
+        }
+
+        function mformatter1(date){
+            var y = date.getFullYear();
+            var m = date.getMonth()+1;
+            var d = date.getDate();
+            var hh = date.getHours();
+            var mm = date.getMinutes();
+            var ss = date.getSeconds();
+            return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d) + " " + (hh<10?('0'+hh):hh)+":"+(mm<10?('0'+mm):mm)+":"+(ss<10?('0'+ss):ss);
+        }
+
+        function mformatter2(s){
+            if (!s) return new Date();
+            var y = s.substring(0,4);
+            var m =s.substring(5,7);
+            var d = s.substring(8,10);
+            var h = s.substring(11,13);
+            var min = s.substring(14,16);
+            var sec = s.substring(17,19);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d) && !isNaN(h) && !isNaN(min) && !isNaN(sec)){
+                return new Date(y,m-1,d,h,min,sec);
+            } else {
+                return new Date();
+            }
+        }
+
+        var AddTab = function (obj) {
+            var _obj = $(obj);
+            var title = _obj.text();
+            var src = _obj.attr("src");
+            //CreateTabs();
+            var strHtml = '<iframe id="frmWorkArea" width="100%" height="100%" frameborder="0" scrolling="yes" src="' + src + '"></iframe>';
+            //判断Tab标签中是否有相同的数据标签
+            var isExist = $("#Tabs").tabs('exists', title);
+            if (!isExist) {
+                $('#Tabs').tabs('add', {
+                    title: title,
+                    fit: true,
+                    href: src,
+                    closable: true
+                });
+            }
+            else {
+                $('#Tabs').tabs('select', title);
+            }
+        };
+
+        var CreateTabs = function () {
+            if ($("#Tabs").length > 0) {
+                $("#Tabs").show();
+                return;
+            }
+            $("#Main").html('<div id="Tabs""></div>');
+            $('#Tabs').tabs({
+                border: false,
+                fit: true,
+                onClose: ClearTabs
+            });
+        };
+        var ClearTabs = function () {
+            if ($('#Tabs').tabs("tabs").length == 0) {
+                $("#Tabs").hide();
+            }
+        };
+
+        function myformatter(date){
+            var y = date.getFullYear();
+            var m = date.getMonth()+1;
+            var d = date.getDate();
+            return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
+        }
+        function myparser(s){
+            if (!s) return new Date();
+            var ss = (s.split('-'));
+            var y = parseInt(ss[0],10);
+            var m = parseInt(ss[1],10);
+            var d = parseInt(ss[2],10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                return new Date(y,m-1,d);
+            } else {
+                return new Date();
+            }
+        }
+    </script>
+</head>
+<body class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north'" style="height:80px;padding-left: 10px;padding-top: 10px;">
+        <h2>SHJ Game OSS</h2>
+        <p>圣皇记后台管理系统</p>
+    </div>
+    <div data-options="region:'west',split:false,collapsible:false" title="Menu" style="width:200px;">
+        <div id="MenuGroup" class="easyui-accordion" fit="true" border="false" style="text-align: center;">
+
+        </div>
+    </div>
+    <div href="tabs/center.html" data-options="region:'center'" style="overflow: hidden;">
+
+    </div>
+</body>
+</html>

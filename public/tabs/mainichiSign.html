@@ -1,0 +1,152 @@
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        $('#itemForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                if(r.code === 200){
+                    $('#signItemDatagrid').datagrid('reload');
+                    $.messager.alert('Info','Success!', 'info');
+                }else{
+                    $.messager.alert('Err',r.msg, 'info');
+                }
+            }
+        });
+    });
+
+    function formatSignOper(val,row,index){
+        return '<a href="#" class="easyui-linkbutton" onclick="delSignItem('+index+')">Remove</a>';
+    }
+
+    function delSignItem(index){
+        $('#signItemDatagrid').datagrid('selectRow', index);// 关键在这里
+        var row = $('#signItemDatagrid').datagrid('getSelected');
+        $.post("/mainichiSignAction/moveSignItem",row,function(data){
+//            var r = $.parseJSON(data);
+            if(data.code === 200){
+//                $('#signItemDatagrid').datagrid('deleteRow', index);
+                $('#signItemDatagrid').datagrid('reload');
+            }else{
+                $.messager.alert('Err',data.msg, 'info');
+            }
+        });
+    }
+</script>
+
+<div class="tabsContent">
+    <div class="easyui-panel" title="MainchiSign Add" data-options="iconCls:'icon-add',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="itemForm" action="/mainichiSignAction/add" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>Name:</td>
+                    <td>
+                        <input id="itemName"
+                               class="easyui-combobox"
+                               name="Name"
+                               data-options="
+                                        prompt:'Please enter Name...',
+                                        url:'tabs/json/ItemConfig.json',
+                                        method:'get',
+                                        valueField:'iid',
+                                        textField:'Name',
+                                        panelHeight:'100px',
+                                        onSelect:function(rec){
+                                            $('#itemForm').form('load',rec);
+                                        }
+                                        ">
+                    </td>
+                </tr>
+                <tr>
+                    <td>ID:</td>
+                    <td><input class="easyui-textbox" type="text" name="iid" data-options="readonly:true,required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Note:</td>
+                    <td><input class="easyui-textbox" type="text" name="Note" style="height: 60px;" data-options="required:true,readonly:true,multiline:true"/></td>
+                </tr>
+                <tr>
+                    <td>Type:</td>
+                    <td><input class="easyui-textbox" type="text" name="Type" data-options="readonly:true,required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Rare:</td>
+                    <td><input class="easyui-textbox" type="text" name="Rare" data-options="readonly:true,required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Number:</td>
+                    <td><input class="easyui-numberbox" value="1" name="Number" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Day:</td>
+                    <td>
+                        <select class="easyui-combobox" name="Day" data-options="required:true">
+                            <option value="1" selected>1-Day</option>
+                            <option value="2">2-Day</option>
+                            <option value="3">3-Day</option>
+                            <option value="4">4-Day</option>
+                            <option value="5">5-Day</option>
+                            <option value="6">6-Day</option>
+                            <option value="7">7-Day</option>
+                            <option value="8">8-Day</option>
+                            <option value="9">9-Day</option>
+                            <option value="10">10-Day</option>
+                            <option value="11">11-Day</option>
+                            <option value="12">12-Day</option>
+                            <option value="13">13-Day</option>
+                            <option value="14">14-Day</option>
+                            <option value="15">15-Day</option>
+                            <option value="16">16-Day</option>
+                            <option value="17">17-Day</option>
+                            <option value="18">18-Day</option>
+                            <option value="19">19-Day</option>
+                            <option value="20">20-Day</option>
+                            <option value="21">21-Day</option>
+                            <option value="22">22-Day</option>
+                            <option value="23">23-Day</option>
+                            <option value="24">24-Day</option>
+                            <option value="25">25-Day</option>
+                            <option value="26">26-Day</option>
+                            <option value="27">27-Day</option>
+                            <option value="28">28-Day</option>
+                            <option value="29">29-Day</option>
+                            <option value="30">30-Day</option>
+                            <option value="31">31-Day</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="MainchiSign Items" data-options="iconCls:'icon-tip',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <table id="signItemDatagrid" class="easyui-datagrid" style="width:700px"
+               data-options="
+                singleSelect:true,
+                collapsible:true,
+                rownumbers:true,
+                fitColumns:true,
+                url:'/mainichiSignAction/getSignItemList',
+                method:'get',
+                view:groupview,
+                groupField:'Day',
+                groupFormatter:function(value,rows){
+                    return value + '-Day [ ' + rows.length + ' Item(s)]';
+                }
+            ">
+            <thead>
+            <tr>
+                <th data-options="field:'iid'">Item ID</th>
+                <th data-options="field:'Name'">Name</th>
+                <th data-options="field:'Node'">Node</th>
+                <th data-options="field:'Type'">Type</th>
+                <th data-options="field:'Rare'">Rare</th>
+                <th data-options="field:'Number'">Number</th>
+                <th data-options="field:'Methods',formatter:formatSignOper">Methods</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,55 @@
+<script type="text/javascript">
+    $(function(){
+        $('#addSvrForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                var msg = r.code == 200 ? "add Server success!" :"server Name is repeatedly!";
+                $.messager.alert('Info',msg, 'info');
+            }
+        });
+    });
+
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="NewGameServer" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="addSvrForm" action="/svrMgrAction/addSvr" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>SvrName:</td>
+                    <td><label><input class="easyui-textbox" type="text" name="svrName" data-options="required:true" style="width: 180px;"/></label></td>
+                </tr>
+                <tr>
+                    <td>ReleaseTime:</td>
+                    <td><label><input class="easyui-datetimebox" name="releaseTime" data-options="formatter:mformatter1,parser:mformatter2,required:true" style="width:180px;"/></label></td>
+                </tr>
+                <tr>
+                    <td>SvrType:</td>
+                    <td>
+                        <label>
+                            <select class="easyui-combobox" name="svrType" style="width:180px;">
+                                <option value="normal">运行服</option>
+                                <option value="test">测试服</option>
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>PreloadPlayer:</td>
+                    <td>
+                        <label>
+                            <select class="easyui-combobox" name="language" style="width:180px;">
+                                <option value="CN">中文昵称</option>
+                                <option value="VN">VN昵称</option>
+                            </select>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><label><input type="submit" value="addNewServer"/></label></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

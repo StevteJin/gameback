@@ -1,0 +1,131 @@
+<script type="application/javascript" charset="utf-8">
+    $(function(){
+        $('#propsKeyForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                if(r.code == 200){
+//                    savetxt("/txt/"+ r.fileName);
+//                    var uri = "data:application/data.txt,";
+//                    var uri = 'data:application/vnd.ms-excel;base64,';
+//                    window.location.href =uri + r.data;
+//                    $('#propsKeyForm').form('clear');
+                    $.messager.alert('Info', "Success!Start download txt...", 'info');
+                    window.location.href = "/txt/" + r.fileName;
+                }else{
+                    $.messager.alert('Info', "Fail", 'info');
+                }
+            }
+        });
+    });
+
+    function savetxt(fileUrl){
+        var fileURL=window.open (fileUrl,"_blank","height=0,width=0,toolbar=no,menubar=no,scrollbars=no,resizable=on,location=no,status=no");
+        fileURL.document.execCommand("SaveAs");
+        fileURL.window.close();
+        fileURL.close();
+    }
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="生成条件" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="propsKeyForm" action="/propsKeyAction/execProps" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>Props:</td>
+                    <td>
+                        <input class="easyui-combobox"
+                               name="propsID1"
+                               data-options="
+                                    prompt:'Please enter Name...',
+                                    url:'tabs/json/ItemConfig2.json',
+                                    method:'get',
+                                    valueField:'propsID',
+                                    textField:'Name',
+                                    required:true,
+                                    panelHeight:'100px',
+                                    onSelect:function(rec){
+                                    }
+                                    ">
+                    </td>
+                    <td>Count:</td>
+                    <td><input class="easyui-textbox" type="text" name="count1" value="1" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Props:</td>
+                    <td>
+                        <input class="easyui-combobox"
+                               name="propsID2"
+                               data-options="
+                                    prompt:'Please enter Name...',
+                                    url:'tabs/json/ItemConfig2.json',
+                                    method:'get',
+                                    valueField:'propsID',
+                                    textField:'Name',
+                                    panelHeight:'100px',
+                                    onSelect:function(rec){
+                                    }
+                                    ">
+                    </td>
+                    <td>Count:</td>
+                    <td><input class="easyui-textbox" type="text" name="count2" value="1"/></td>
+                </tr>
+                <tr>
+                    <td>Props:</td>
+                    <td>
+                        <input class="easyui-combobox"
+                               name="propsID3"
+                               data-options="
+                                    prompt:'Please enter Name...',
+                                    url:'tabs/json/ItemConfig2.json',
+                                    method:'get',
+                                    valueField:'propsID',
+                                    textField:'Name',
+                                    panelHeight:'100px',
+                                    onSelect:function(rec){
+                                    }
+                                    ">
+                    </td>
+                    <td>Count:</td>
+                    <td><input class="easyui-textbox" type="text" name="count3" value="1"/></td>
+                </tr>
+                <tr>
+                    <td>Props:</td>
+                    <td>
+                        <input class="easyui-combobox"
+                               name="propsID4"
+                               data-options="
+                                    prompt:'Please enter Name...',
+                                    url:'tabs/json/ItemConfig2.json',
+                                    method:'get',
+                                    valueField:'propsID',
+                                    textField:'Name',
+                                    panelHeight:'100px',
+                                    onSelect:function(rec){
+                                    }
+                                    ">
+                    </td>
+                    <td>Count:</td>
+                    <td><input class="easyui-textbox" type="text" name="count4" value="1"/></td>
+                </tr>
+                <tr>
+                    <td>StartTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="start"></td>
+                    <td>EndTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="end"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>ItemCount:</td>
+                    <td><input class="easyui-textbox" type="text" name="itemCount" value="1" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><input type="submit" value="生成" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

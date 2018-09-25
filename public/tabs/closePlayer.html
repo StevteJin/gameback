@@ -1,0 +1,98 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 9px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+</style>
+<script language="javascript" charset="utf-8">
+    function getLocalTime(nS) {
+        return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
+    }
+
+    $(function(){
+        $('#cpform').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                $('#cpform').form('clear');
+                $('#cpi').html("");
+                $.messager.alert('Info', r.msg, 'info');
+            }
+        });
+    });
+
+    function searchPlayer(rec){
+        $.post("/playerAction/searchPlayer",rec,function(player){
+            var html ="<TABLE border=1 class='table' cellSpacing=0>";
+            html += "<tr><td rowspan='8' class='heart'>基础信息</td><td>昵称</td><td>" + player.nickName + "</td></tr>";
+            html += "<tr><td>角色ID</td><td>" + player.role.id + "</td></tr>";
+            html += "<tr><td>玩家ID</td><td>" + player._id + "</td></tr>";
+            html += "<tr><td>玩家等级</td><td>" + player.role.lv + "</td></tr>";
+            html += "<tr><td>VIP等级</td><td>" + player.vip + "</td></tr>";
+            html += "<tr><td>VIP经验</td><td>" + player.vipExp + "</td></tr>";
+            html += "<tr><td>创建时间</td><td>" + getLocalTime(player.svr_createtimestamp) + "</td></tr>";
+            html += "<tr><td>存档时间</td><td>" + getLocalTime(player.svr_savetimestamp) + "</td></tr>";
+            html += "<tr><td rowspan='12' class='heart'>玩家属性</td><td>生命</td><td>" + player.svr_combat.hp + "</td></tr>";
+            html += "<tr><td>魔法</td><td>" + player.svr_combat.mp + "</td></tr>";
+            html += "<tr><td>攻击</td><td>" + player.svr_combat.assault + "</td></tr>";
+            html += "<tr><td>防御</td><td>" + player.svr_combat.defense + "</td></tr>";
+            html += "<tr><td>速度</td><td>" + player.svr_combat.tempo + "</td></tr>";
+            html += "<tr><td>命中</td><td>" + player.svr_combat.hitRate + "</td></tr>";
+            html += "<tr><td>躲避</td><td>" + player.svr_combat.dodgeRate + "</td></tr>";
+            html += "<tr><td>暴率</td><td>" + player.svr_combat.critRate + "</td></tr>";
+            html += "<tr><td>暴伤</td><td>" + player.svr_combat.critHarm + "</td></tr>";
+            html += "<tr><td>击晕</td><td>" + player.svr_combat.stunRate + "</td></tr>";
+            html += "<tr><td>战力</td><td>" + player.svr_combat.combatPowerVal + "</td></tr>";
+            html += "<tr><td>战力排行</td><td>" + player.crank + "</td></tr>";
+            html +="</TABLE>";
+            $('#cpi').html(html);
+        });
+    }
+
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="封禁玩家" data-options="iconCls:'icon-man'" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="cpform" action="/playerAction/closePlayer" method="post">
+            <input type="hidden" name="_id"/>
+            <table cellpadding="5">
+                <tr>
+                    <td>NickName:</td>
+                    <td><input class="easyui-combobox"
+                               name="nickName"
+                               id="cnname"
+                               data-options="
+                                    valueField:'nickName',
+                                    textField:'nickName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/playerAction/findPlayer', { txt:newValue},function(data){
+                                                    $('#cnname').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        searchPlayer(rec);
+                                        $('#cpform').form('load',rec);
+                                    }">
+                    </td>
+                    <td><input type="submit" value="封禁" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+        <div id="cpi">
+
+        </div>
+    </div>
+</div>

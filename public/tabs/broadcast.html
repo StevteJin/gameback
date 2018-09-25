@@ -1,0 +1,90 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $('#broadcastForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                $('#broadcastDatagrid').datagrid('reload');
+                $.messager.alert('Info', r.msg, 'info');
+            }
+        });
+    });
+
+    function getBroadcast(rec){
+        $('#broadcastDatagrid').datagrid({
+            queryParams: {
+                svrName: rec.svrName
+            }
+        });
+    }
+
+    function formatMOper(val,row,index){
+        return '<a href="#" class="easyui-linkbutton" onclick="delBroadcast('+index+')">Remove</a>';
+    }
+
+    function delBroadcast(index){
+        $('#broadcastDatagrid').datagrid('selectRow', index);// 关键在这里
+        var row = $('#broadcastDatagrid').datagrid('getSelected');
+        $.post("/broadcastAction/delSysBroadcast",row,function(data){
+            if(data.code === 200){
+                $('#broadcastDatagrid').datagrid('reload');
+            }else{
+                $.messager.alert('Err',data.msg, 'info');
+            }
+        });
+    }
+
+    function broadcastDate(val,row){
+        var date = new Date(val * 1000);
+        var y = date.getFullYear();
+        var m = date.getMonth() > 10 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1);
+        var d = date.getDate() > 10 ? date.getDate() : '0' + date.getDate();
+        return y + '-' + m + '-' + d;
+    }
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="发送广播" data-options="iconCls:'icon-add'">
+        <form id="broadcastForm" action="/broadcastAction/addSysBroadcast" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>ServerName:</td>
+                    <td style="width:280px;">
+                    <input class="easyui-combobox"
+                               name="svrName"
+                               id="svrName"
+                               data-options="
+                                    valueField:'svrName',
+                                    textField:'svrName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/svrMgrAction/svrList', { txt:newValue},function(data){
+                                                    $('#svrName').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        getBroadcast(rec);
+                                    }">
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Broadcast:</td>
+                    <td><input class="easyui-textbox" style="width: 100%;max-width:400px;" type="text" name="content" data-options="required:true"/></td>
+                    <td><input type="submit" value="Submit" style="margin-left: auto;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="管理广播" data-options="iconCls:'icon-man'">
+        <table id="broadcastDatagrid" class="easyui-datagrid"
+               data-options="singleSelect:true,url:'/broadcastAction/broadcastList',method:'get',border:false,fitColumns:true,rownumbers:true">
+            <thead>
+            <tr>
+                <th data-options="field:'content',width:20">Brodcast</th>
+                <th data-options="field:'timestamp',align:'right',formatter:broadcastDate">Send Time</th>
+                <th data-options="field:'Methods',align:'center',formatter:formatMOper">Methods</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>

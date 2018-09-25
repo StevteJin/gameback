@@ -1,0 +1,70 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $('#addPropsForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                $('#addPropsForm').form('clear');
+                $.messager.alert('Info', r.msg, 'info');
+            }
+        });
+    });
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="添加道具" data-options="iconCls:'icon-add'" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="addPropsForm" action="/playerAction/addProps" class="easyui-form" method="post">
+            <!--<input type="hidden" name="propsID" value="3004">-->
+            <table cellpadding="5">
+                <tr>
+                    <td>NickName:</td>
+                    <td><input class="easyui-combobox"
+                               name="nickName"
+                               id="pnname"
+                               data-options="
+                                    valueField:'nickName',
+                                    textField:'nickName',
+                                    panelHeight:'100',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/playerAction/findPlayer', { txt:newValue},function(data){
+                                                    $('#pnname').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        $('#addPropsForm').form('load',rec);
+                                    }">
+                    </td>
+                </tr>
+                <tr>
+                    <td>PID:</td>
+                    <td><input class="easyui-textbox" type="text" name="_id" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Props:</td>
+                    <td>
+                    <input id="propsSearchInput"
+                           class="easyui-combobox"
+                           name="propsID"
+                           data-options="
+                                    prompt:'Please enter Name...',
+                                    url:'tabs/json/ItemConfig2.json',
+                                    method:'get',
+                                    valueField:'propsID',
+                                    textField:'Name',
+                                    required:true,
+                                    panelHeight:'100px',
+                                    onSelect:function(rec){
+                                    }
+                                    ">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Count:</td>
+                    <td><input class="easyui-textbox" type="text" name="count" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

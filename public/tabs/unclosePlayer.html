@@ -1,0 +1,49 @@
+<script language="javascript" charset="utf-8">
+    function formatClosePlayerOper(val,row,index){
+        return '<a href="#" class="easyui-linkbutton" onclick="unclosePlayer('+index+')">UnClose</a>';
+    }
+
+    function forattersDate(val,row){
+        return new Date(parseInt(val) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');
+    }
+
+    function formatLv(val,row){
+        return val.lv;
+    }
+
+    function formatCombat(val,row){
+        return val.combatPowerVal;
+    }
+
+    function unclosePlayer(index) {
+        $('#closePlayerDatagrid').datagrid('selectRow', index);// 关键在这里
+        var row = $('#closePlayerDatagrid').datagrid('getSelected');
+        var opts = {"pid":row._id,"nickName":row.nickName};
+        $.post("/playerAction/unclosePlayer",opts,function(data){
+            if(data.code === 200){
+                $('#closePlayerDatagrid').datagrid('reload');
+            }else{
+                $.messager.alert('Err',data.msg, 'info');
+            }
+        });
+    }
+
+</script>
+<div class="tabsContent">
+    <!--<div style="margin:10px 0;"></div>-->
+    <div class="easyui-panel" title="Monster Using" data-options="iconCls:'icon-man'">
+        <table id="closePlayerDatagrid" class="easyui-datagrid"
+               data-options="singleSelect:true,url:'/playerAction/closePlayerList',method:'get',border:false,fitColumns:true">
+            <thead>
+            <tr>
+                <th data-options="field:'_id'">Player ID</th>
+                <th data-options="field:'nickName'">NickName</th>
+                <th data-options="field:'role',formatter:formatLv">Lv</th>
+                <th data-options="field:'svr_combat',formatter:formatCombat">Combat</th>
+                <th data-options="field:'svr_closeTimestamp',align:'right',formatter:forattersDate">Close Date</th>
+                <th data-options="field:'Methods',align:'center',width:20,formatter:formatClosePlayerOper">Methods</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>

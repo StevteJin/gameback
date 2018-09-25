@@ -1,0 +1,66 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 14px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+</style>
+<script type="application/javascript" charset="utf-8">
+    $(function(){
+        $('#playerUseForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                showPlayerUseForm(r);
+            }
+        });
+    });
+    function showPlayerUseForm(r){
+        var html ="<TABLE border=1 class='table' cellSpacing=0>";
+        html +="<tr class='heart'><td>日期</td><td>总登陆次数</td><td>登陆玩家数</td><td>人均登陆次数</td><td>使用总时长</td><td>人均使用时长</td></tr>";
+        for(var i=0;i<r.length;i++){
+            var item = r[i];
+            html +="<tr><td>"+item.date+"</td><td>"+item.allLoginCount+"</td><td>"+item.loginCount+"</td><td>"+item.avgLoginCount+"</td><td>"+item.allLoginSec+"</td><td>"+item.avgLoginSec+"</td></tr>";
+        }
+        html += "</TABLE>";
+        $('#playerUerDiv').html(html);
+    }
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询条件" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="playerUseForm" action="/statisticAction/everyDayPlayerUse" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>StartTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="start"></td>
+                </tr>
+                <tr>
+                    <td>EndTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="end"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询结果" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <div id="playerUerDiv">
+            暂无结果......!!!
+        </div>
+    </div>
+</div>

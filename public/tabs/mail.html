@@ -1,0 +1,64 @@
+<script language="javascript" charset="utf-8">
+    $(function(){
+        $('#mailForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                if(r.code === 200){
+                    $.messager.alert('Info','Success!', 'info');
+                }else{
+                    $.messager.alert('Err',r.msg, 'info');
+                }
+            }
+        });
+    });
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="Send Mail" data-options="iconCls:'icon-add',collapsible:true" style="padding-left:20px;padding-top:5px;padding-bottom: 15px;">
+        <form id="mailForm" action="/mailAction/sendMail" class="easyui-form" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>NickName:</td>
+                    <td>
+                        <input id="mailNickName"
+                               class="easyui-combobox"
+                               name="nickName"
+                               data-options="
+                                    valueField:'nickName',
+                                    textField:'nickName',
+                                    panelHeight:'100',
+                                    prompt:'Please enter NickName...',
+                                    onChange:function(newValue,oldValue){
+                                            $.post('/admin/findPlayer', { txt:newValue},function(data){
+                                                    $('#mailNickName').combobox('loadData', data);
+                                            });
+                                        },
+                                    onSelect:function(rec){
+                                        $('#mailForm').form('load',rec);
+                                    }
+                                    ">
+                    </td>
+                </tr>
+                <tr>
+                    <td>PID:</td>
+                    <td><input class="easyui-textbox" type="text" name="pid" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Theme:</td>
+                    <td><input class="easyui-textbox" type="text" name="theme" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td>Content:</td>
+                    <td><input class="easyui-textbox" type="text" name="content" style="height: 60px;" data-options="required:true,multiline:true"/></td>
+                </tr>
+                <tr>
+                    <td>From:</td>
+                    <td><input class="easyui-textbox" type="text" name="from" value="GM" data-options="required:true"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

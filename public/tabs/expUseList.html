@@ -1,0 +1,47 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 14px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+</style>
+<script type="application/javascript" charset="utf-8">
+    $(function(){
+        $.get("/useOutAction/expUseList",function(r){
+                // var r = $.parseJSON(data);
+                showExpUseList(r);
+        });
+    });
+
+    function showExpUseList(r){
+        var count = r.length;
+        var html ="<TABLE border=1 class='table' cellSpacing=0>";
+        html +="<tr class='heart'><td>itemCount</td><td colspan='5'>"+count+"</td></tr>";
+        html +="<tr class='heart'><td>PID</td><td>玩家</td><td>道具ID</td><td>产出数量</td><td>消耗数量</td><td>检测时间</td></tr>";
+        for(var i=0;i< count;i++){
+            var item = r[i];
+            html +="<tr class='heart'><td>"+item.pid+"</td><td>"+item.nickName+"</td><td>"+item.propsId+"</td><td>"+item.outTotal+"</td><td>"+item.useTotal+"</td><td>"+formatterMyDate(item.timestamp)+"</td></tr>";
+        }
+        html += "</TABLE>";
+        $('#expUseListDiv').html(html);
+    }
+</script>
+<div class="tabsContent">
+    <div class="easyui-panel" title="异常消耗列表" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <div id="expUseListDiv">
+            暂无结果......!!!
+        </div>
+    </div>
+</div>

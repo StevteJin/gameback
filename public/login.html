@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>SHJGame OSS</title>
+    <link rel="stylesheet" type="text/css" href="./themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="./themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
+    <script type="text/javascript" src="./jquery.min.js"></script>
+    <script type="text/javascript" src="./jquery.easyui.min.js"></script>
+    <script type="application/javascript" charset="utf-8">
+        $(function(){
+            $('#loginForm').form({
+                success:function(data){
+                    var r = $.parseJSON(data);
+                    inspectLogin(r);
+                }
+            });
+        });
+
+        function inspectLogin(r){
+            console.info(r);
+            if(r.code == 200){
+                sessionStorage.loginName = r.loginName;
+                window.location.href="/index.html";
+            }else{
+                $.messager.alert('Info',"login Fail!", 'info');
+            }
+        }
+    </script>
+</head>
+<body>
+<div style="width:260px;height:160px;position:absolute;left:50%;top:50%;margin-top:-150px;margin-left:-175px;">
+    <div id="p" class="easyui-panel" title="Login OSS" style="width:260px;height:160px;padding:10px;">
+        <form id="loginForm" action="/admin/webLogin" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>username:</td>
+                    <td><input class="easyui-textbox" data-options="required:true" name="username"></td>
+                </tr>
+                <tr>
+                    <td>password:</td>
+                    <td><input class="easyui-textbox" type="password" data-options="required:true" name="password"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 14px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+</style>
+<script type="application/javascript" charset="utf-8">
+    $(function(){
+        $('#useGoldForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+                showUseGoldForm(r);
+            }
+        });
+    });
+    function showUseGoldForm(r){
+        var html ="<TABLE border=1 class='table' cellSpacing=0>";
+        var name = r._id;
+        var count = r.count;
+        var total = r.total;
+        html +="<tr class='heart'><td>道具</td><td>"+ name +"</td><td>条数</td><td>"+count+"条</td><td>总数</td><td>"+total+"</td></tr>";
+        html +="<tr class='heart'><td colspan='6'>记录</td></tr>";
+        html +="<tr class='heart'><td>PID</td><td>昵称</td><td>PropsID</td><td>道具</td><td>个数</td><td>时间</td></tr>";
+        var items = r.items;
+        for(var i=0;i<items.length;i++){
+            var props = items[i];
+            html +="<tr><td>"+props.pid+"</td><td>"+props.nickName+"</td><td>"+props.propsId+"</td><td>"+props.propsName+"</td><td>"+props.count+"</td><td>"+formatterYMD(props.timestamp)+"</td></tr>";
+        }
+        html += "</TABLE>";
+        $('#useGoldDiv').html(html);
+    }
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询条件" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="useGoldForm" action="/useOutAction/useProps" method="post">
+            <input type="hidden" name="propsId" value="3000">
+            <table cellpadding="5">
+                <tr>
+                    <td>StartTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="start"></td>
+                </tr>
+                <tr>
+                    <td>EndTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="end"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询结果" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <div id="useGoldDiv">
+            暂无结果......!!!
+        </div>
+    </div>
+</div>

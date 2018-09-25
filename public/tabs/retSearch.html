@@ -1,0 +1,79 @@
+<style>
+    .table {
+        border-collapse:collapse;
+        border-color: #95B8E7;
+        mso-cellspacing: 0;
+        width: 60%;
+        padding: 5px;
+    }
+    .table td{
+        font-size: 14px;
+        text-align: center;
+        padding: 4px;
+    }
+
+    .heart{
+        font-size: larger;
+        text-align: center;
+    }
+</style>
+<script type="application/javascript" charset="utf-8">
+    $(function(){
+        $('#retSearchForm').form({
+            success:function(data){
+                var r = $.parseJSON(data);
+//                console.info(data);
+                showRetForm(r);
+            }
+        });
+    });
+    function showRetForm(r){
+        var html ="<TABLE border=1 class='table' cellSpacing=0>";
+        html +="<tr class='heart'><td rowspan='2'>首次使用时间</td><td rowspan='2'>新增用户</td><td colspan='9'>留存率</td></tr>";
+        html +="<tr class='heart'><td>1天后</td><td>2天后</td><td>3天后</td><td>4天后</td><td>5天后</td><td>6天后</td><td>7天后</td><td>14天后</td><td>30天后</td></tr>";
+        for(var i=0;i<r.length;i++){
+            var ret = r[i];
+            var date = ret.date;
+            var rgCount = ret.rgCount;
+            var one = (parseFloat((ret.loginCount[0] || 0) /rgCount).toFixed(4) * 100) + "%";
+            var two = (parseFloat((ret.loginCount[1] || 0) /rgCount).toFixed(4) * 100) + "%";
+            var three = (parseFloat((ret.loginCount[2] || 0) /rgCount).toFixed(4) * 100) + "%";
+            var four = (parseFloat((ret.loginCount[3] || 0) /rgCount).toFixed(4) * 100) + "%";
+            var five = (parseFloat((ret.loginCount[4] || 0) /rgCount).toFixed(4) * 100) + "%";
+            var six = (parseFloat((ret.loginCount[5] || 0) /rgCount).toFixed(4) * 100) + "%";
+            var seven = (parseFloat((ret.loginCount[6] || 0) /rgCount).toFixed(4) * 100) + "%";
+            var sevent = (parseFloat((ret.loginCount[7] || 0) /rgCount).toFixed(4) * 100) + "%";
+            var threet = (parseFloat((ret.loginCount[8] || 0) /rgCount).toFixed(4) * 100) + "%";
+            html +="<tr><td>"+date+"</td><td>"+rgCount+"</td><td>"+one+"</td><td>"+two+"</td><td>"+three+"</td><td>"+four+"</td><td>"+five+"</td><td>"+six+"</td><td>"+seven+"</td><td>"+sevent+"</td><td>"+threet+"</td></tr>";
+        }
+        html += "</TABLE>";
+        $('#outRetDiv').html(html);
+    }
+</script>
+<div class="tabsContent">
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="查询条件" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <form id="retSearchForm" action="/statisticAction/retSeatch" method="post">
+            <table cellpadding="5">
+                <tr>
+                    <td>StartTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="start"></td>
+                </tr>
+                <tr>
+                    <td>EndTime:</td>
+                    <td><input class="easyui-datebox" data-options="required:true,formatter:myformatter,parser:myparser" name="end"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Submit" style="float: right;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="margin:10px 0;"></div>
+    <div class="easyui-panel" title="用户留存" data-options="iconCls:'icon-man'" style="padding: 15px;padding-top:5px;">
+        <div id="outRetDiv">
+            暂无结果......!!!
+        </div>
+    </div>
+</div>

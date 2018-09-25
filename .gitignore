@@ -1,0 +1,18 @@
+# Created by .ignore support plugin (hsz.mobi)
+.project
+*/node-log.log
+logs/*.log
+*.log
+!.gitignore
+/node_modules/*
+*.project
+.settings/
+**/*.svn
+*.svn
+*.swp
+*.sublime-project
+*.sublime-workspace
+*.idea
+*.txt.rar
+/public/clientConf/*
+conf/dbConfig.json
